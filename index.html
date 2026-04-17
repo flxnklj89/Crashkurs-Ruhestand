@@ -1,1 +1,1669 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ruhestand & (Ver-)Erben · Kapitalerhalt & Entnahmestrategie</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --forest:       #1c3a2a;
+  --forest-mid:   #2d5a40;
+  --forest-light: #3d7a57;
+  --cream:        #faf7f0;
+  --cream-dark:   #f0ebe0;
+  --amber:        #e8a020;
+  --amber-light:  #f5c65a;
+  --coral:        #d94f35;
+  --text:         #1a1a18;
+  --text-muted:   #5a5a50;
+  --text-light:   #8a8a80;
+  --white:        #ffffff;
+  --border:       1px solid rgba(28,58,42,.09);
+  --shadow:       0 4px 24px rgba(28,58,42,.08);
+  --shadow-lg:    0 12px 48px rgba(28,58,42,.14);
+  --radius:       18px;
+  --radius-sm:    11px;
+}
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; font-size:17px; }
+body {
+  font-family:'DM Sans',sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
 
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  height:60px;
+  background: rgba(250,247,240,.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 22px;
+}
+.nav-logo {
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem; font-weight:700;
+  color:var(--forest); letter-spacing:-.02em;
+  display:flex; align-items:center; gap:8px;
+}
+.nav-logo-dot { color:var(--amber); }
+.nav-pills {
+  display:flex; gap:3px;
+  background:var(--cream-dark);
+  border-radius:999px; padding:3px;
+}
+.nav-pill {
+  padding:7px 20px; border-radius:999px;
+  font-size:.88rem; font-weight:600;
+  cursor:pointer; border:none;
+  background:transparent; color:var(--text-muted);
+  transition:all .22s;
+  white-space:nowrap;
+}
+.nav-pill.active {
+  background:var(--forest); color:white;
+  box-shadow:0 2px 10px rgba(28,58,42,.28);
+}
+
+/* ── PAGE ── */
+.page { display:none; padding-top:60px; min-height:100vh; }
+.page.active { display:block; }
+
+/* ── HERO ── */
+.hero {
+  background:var(--forest);
+  padding:74px 24px 66px;
+  text-align:center;
+  position:relative; overflow:hidden;
+}
+.hero::after {
+  content:'';
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 130% 70% at 50% -5%, var(--forest-light),transparent 65%);
+  pointer-events:none;
+}
+.eyebrow {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(232,160,32,.16);
+  color:var(--amber-light);
+  border:1px solid rgba(232,160,32,.30);
+  border-radius:999px;
+  padding:5px 15px;
+  font-size:.76rem; font-weight:700;
+  letter-spacing:.08em; text-transform:uppercase;
+  margin-bottom:24px;
+}
+.hero h1 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,5.5vw,3.3rem);
+  font-weight:700; line-height:1.16;
+  letter-spacing:-.025em;
+  color:white; max-width:720px;
+  margin:0 auto 20px;
+}
+.hero h1 em { color:var(--amber-light); font-style:italic; }
+.hero-sub {
+  font-size:clamp(.98rem,2.2vw,1.12rem);
+  color:rgba(255,255,255,.68);
+  max-width:560px; margin:0 auto;
+  line-height:1.7;
+}
+.hero-stats {
+  display:flex; justify-content:center;
+  max-width:620px; margin:52px auto 0;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.hstat {
+  flex:1; padding:24px 14px;
+  border-right:1px solid rgba(255,255,255,.10);
+}
+.hstat:last-child { border-right:none; }
+.hstat-n {
+  font-family:'Playfair Display',serif;
+  font-size:1.85rem; font-weight:700;
+  color:var(--amber-light); line-height:1;
+}
+.hstat-l {
+  font-size:.74rem; color:rgba(255,255,255,.52);
+  margin-top:6px; line-height:1.4;
+}
+
+/* ── SECTION ── */
+.sec {
+  max-width:900px; margin:0 auto;
+  padding:58px 26px;
+}
+.sec + .sec { padding-top:6px; }
+.sec-ey {
+  font-size:.74rem; font-weight:700;
+  letter-spacing:.10em; text-transform:uppercase;
+  color:var(--forest-light); margin-bottom:10px;
+}
+.sec-title {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.5rem,3.8vw,2.1rem);
+  font-weight:700; color:var(--forest);
+  letter-spacing:-.02em; line-height:1.22;
+  margin-bottom:14px;
+}
+.sec-lead {
+  font-size:clamp(.96rem,2vw,1.06rem);
+  color:var(--text-muted);
+  line-height:1.72; max-width:680px;
+  margin-bottom:32px;
+}
+.divider {
+  height:1px; background:var(--cream-dark);
+  max-width:900px; margin:0 auto;
+}
+
+/* ── CARDS ── */
+.grid-3 { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px; }
+.grid-2 { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; }
+
+.card {
+  background:white; border:var(--border);
+  border-radius:var(--radius); padding:28px 24px;
+  box-shadow:var(--shadow);
+  transition:transform .2s,box-shadow .2s;
+}
+.card:hover { transform:translateY(-3px); box-shadow:var(--shadow-lg); }
+.card-icon {
+  width:44px; height:44px; border-radius:11px;
+  background:var(--forest);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.3rem; margin-bottom:14px;
+}
+.card h3 {
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem; color:var(--forest);
+  margin-bottom:8px;
+}
+.card p { font-size:.92rem; color:var(--text-muted); line-height:1.62; }
+
+/* ── HIGHLIGHT BOX ── */
+.hbox {
+  background:var(--forest); color:white;
+  border-radius:var(--radius); padding:32px 30px;
+  display:flex; gap:20px; align-items:flex-start;
+  margin-bottom:14px;
+}
+.hbox-icon { font-size:1.9rem; flex-shrink:0; margin-top:2px; }
+.hbox h3 {
+  font-family:'Playfair Display',serif;
+  font-size:1.18rem; margin-bottom:9px;
+}
+.hbox p { font-size:.94rem; color:rgba(255,255,255,.74); line-height:1.68; }
+.hbox strong { color:var(--amber-light); }
+
+/* ── AMBER BOX ── */
+.abox {
+  background:rgba(232,160,32,.09);
+  border:1px solid rgba(232,160,32,.28);
+  border-radius:var(--radius); padding:28px 28px;
+  margin-bottom:14px;
+}
+.abox h3 {
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem; color:var(--forest);
+  margin-bottom:9px;
+}
+.abox p { font-size:.94rem; color:var(--text-muted); line-height:1.68; }
+.abox strong { color:var(--forest); font-weight:600; }
+.abox ul { margin:10px 0 0 20px; }
+.abox ul li { font-size:.92rem; color:var(--text-muted); margin-bottom:6px; line-height:1.55; }
+
+/* ── CORAL BOX ── */
+.cbox {
+  background:rgba(217,79,53,.07);
+  border:1px solid rgba(217,79,53,.22);
+  border-radius:var(--radius); padding:28px 28px;
+  margin-bottom:14px;
+}
+.cbox h3 {
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem; color:var(--coral);
+  margin-bottom:9px;
+}
+.cbox p { font-size:.94rem; color:var(--text-muted); line-height:1.68; }
+.cbox ul { margin:10px 0 0 20px; }
+.cbox ul li { font-size:.92rem; color:var(--text-muted); margin-bottom:6px; line-height:1.55; }
+.cbox strong { color:var(--coral); }
+
+/* ── MERKSATZ ── */
+.merksatz {
+  border-left:3px solid var(--amber);
+  padding:16px 22px;
+  background:rgba(232,160,32,.07);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  margin:22px 0;
+}
+.merksatz p {
+  font-family:'Playfair Display',serif;
+  font-style:italic; font-size:1.05rem;
+  color:var(--forest); line-height:1.52;
+}
+
+/* ── TABLE ── */
+.table-wrap { overflow-x:auto; border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:14px; }
+table.styled {
+  width:100%; border-collapse:collapse;
+  font-size:.9rem;
+}
+table.styled th {
+  background:var(--forest); color:white;
+  padding:14px 17px; text-align:left;
+  font-weight:600; font-size:.82rem;
+  letter-spacing:.04em;
+  white-space:nowrap;
+}
+table.styled td {
+  padding:12px 17px;
+  border-bottom:1px solid var(--cream-dark);
+  background:white; color:var(--text-muted);
+  line-height:1.45;
+}
+table.styled tr:last-child td { border-bottom:none; }
+table.styled tr:nth-child(even) td { background:#fafaf7; }
+.good { color:#27a057; font-weight:600; }
+.bad  { color:var(--coral); font-weight:600; }
+
+/* ── ALLOCATION BARS (Vermögens-Schichten) ── */
+.alloc-card {
+  background:white; border:var(--border);
+  border-radius:var(--radius); padding:30px 28px;
+  box-shadow:var(--shadow); margin-bottom:16px;
+}
+.alloc-card h3 {
+  font-family:'Playfair Display',serif;
+  font-size:1.15rem; color:var(--forest);
+  margin-bottom:6px;
+}
+.alloc-card p.sub { font-size:.9rem; color:var(--text-muted); margin-bottom:22px; }
+.alloc-bar {
+  display:flex; height:46px; border-radius:10px;
+  overflow:hidden; margin-bottom:16px;
+}
+.alloc-seg {
+  display:flex; align-items:center; justify-content:center;
+  font-size:.8rem; font-weight:700; color:white;
+  transition:flex .5s;
+}
+.alloc-legend { display:flex; flex-direction:column; gap:10px; }
+.alloc-leg-row {
+  display:flex; align-items:flex-start; gap:11px;
+  padding:10px 0;
+  border-bottom:1px dashed var(--cream-dark);
+}
+.alloc-leg-row:last-child { border-bottom:none; }
+.alloc-dot { width:14px; height:14px; border-radius:4px; margin-top:3px; flex-shrink:0; }
+.alloc-text { flex:1; }
+.alloc-name {
+  font-weight:700; color:var(--forest); font-size:.95rem;
+  display:flex; justify-content:space-between; align-items:center; gap:10px;
+  margin-bottom:3px;
+}
+.alloc-pct { color:var(--amber); font-family:'Playfair Display',serif; font-size:1.05rem; }
+.alloc-desc { font-size:.86rem; color:var(--text-muted); line-height:1.55; }
+
+/* ── STEPS ── */
+.steps { display:flex; flex-direction:column; gap:12px; }
+.step {
+  display:flex; gap:20px; align-items:flex-start;
+  background:white; border:var(--border);
+  border-radius:var(--radius); padding:24px 24px;
+  box-shadow:var(--shadow);
+  transition:transform .18s;
+}
+.step:hover { transform:translateX(4px); }
+.step-n {
+  flex-shrink:0;
+  width:40px; height:40px;
+  background:var(--forest); color:white;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem; font-weight:700;
+}
+.step h3 {
+  font-family:'Playfair Display',serif;
+  font-size:1.05rem; color:var(--forest);
+  margin-bottom:5px;
+}
+.step p { font-size:.92rem; color:var(--text-muted); line-height:1.6; }
+.step-tag {
+  display:inline-block; margin-top:8px;
+  background:rgba(232,160,32,.14);
+  color:#9a6a00; border-radius:99px;
+  padding:3px 11px; font-size:.75rem; font-weight:700;
+}
+
+/* ── ACCORDION ── */
+.acc { display:flex; flex-direction:column; gap:9px; }
+.acc-item {
+  background:white; border:var(--border);
+  border-radius:var(--radius-sm); overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.acc-head {
+  padding:17px 22px; cursor:pointer;
+  display:flex; align-items:center; justify-content:space-between;
+  user-select:none;
+  transition:background .18s;
+}
+.acc-head:hover { background:#f7f5ef; }
+.acc-head h3 {
+  font-size:.96rem; font-weight:600;
+  color:var(--forest);
+  display:flex; align-items:center; gap:10px;
+}
+.acc-head h3 span { font-size:1.05rem; }
+.acc-chev {
+  width:19px; height:19px; flex-shrink:0;
+  color:var(--text-light); transition:transform .28s;
+}
+.acc-item.open .acc-chev { transform:rotate(180deg); }
+.acc-body {
+  max-height:0; overflow:hidden;
+  transition:max-height .32s ease, padding .22s;
+  padding:0 22px;
+}
+.acc-item.open .acc-body { max-height:900px; padding:0 22px 20px; }
+.acc-body p  { font-size:.92rem; color:var(--text-muted); line-height:1.72; }
+.acc-body ul { margin:9px 0 0 18px; }
+.acc-body ul li { font-size:.92rem; color:var(--text-muted); margin-bottom:6px; line-height:1.55; }
+.acc-body strong { color:var(--forest); }
+
+/* ── STAIRCASE (Festgeld-Treppe) ── */
+.stair-card {
+  background:white; border:var(--border);
+  border-radius:var(--radius); padding:30px 26px;
+  box-shadow:var(--shadow);
+}
+.stair-bars {
+  display:flex; align-items:flex-end;
+  gap:10px; height:170px; margin:22px 0 0;
+}
+.stair-bw {
+  flex:1; display:flex;
+  flex-direction:column; align-items:center; gap:6px;
+}
+.stair-b {
+  width:100%; border-radius:6px 6px 0 0;
+  background:linear-gradient(180deg,var(--amber),var(--amber-light));
+  display:flex; align-items:flex-start; justify-content:center;
+  padding-top:8px;
+  font-size:.78rem; font-weight:700; color:var(--forest);
+  position:relative;
+}
+.stair-b::after {
+  content:attr(data-rate);
+  position:absolute; top:-22px;
+  font-size:.72rem; color:var(--forest-light); font-weight:600;
+}
+.stair-lbl { font-size:.78rem; color:var(--text-muted); text-align:center; font-weight:600; }
+
+/* ── FEHLER VS. RICHTIG ── */
+.vs-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:14px;
+  margin-bottom:14px;
+}
+
+/* ── EINSPARUNGS-RECHNER ── */
+.tax-card {
+  background:white; border:var(--border);
+  border-radius:var(--radius); padding:28px 26px;
+  box-shadow:var(--shadow); margin-bottom:16px;
+}
+.tax-rows { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
+.tax-row {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 14px; background:var(--cream); border-radius:10px;
+}
+.tax-row.total { background:var(--forest); color:white; }
+.tax-row.total .tax-val { color:var(--amber-light); }
+.tax-label { font-size:.9rem; color:var(--text-muted); }
+.tax-row.total .tax-label { color:rgba(255,255,255,.7); }
+.tax-val { font-family:'Playfair Display',serif; font-weight:700; font-size:1.02rem; color:var(--forest); }
+
+/* ─────────────────────────────
+   PAGE 2 SIMULATOR
+───────────────────────────── */
+.sim-hero {
+  background:linear-gradient(135deg,var(--forest),var(--forest-mid));
+  padding:58px 24px 50px; text-align:center;
+}
+.sim-hero h1 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.65rem,5vw,2.6rem);
+  font-weight:700; color:white;
+  letter-spacing:-.02em; margin-bottom:12px;
+}
+.sim-hero p { font-size:1rem; color:rgba(255,255,255,.66); max-width:480px; margin:0 auto; line-height:1.65; }
+
+.sim-wrap { max-width:900px; margin:0 auto; padding:38px 26px 80px; }
+
+/* presets */
+.presets { display:flex; gap:9px; flex-wrap:wrap; margin-bottom:22px; }
+.preset {
+  padding:8px 17px; border-radius:999px;
+  font-size:.82rem; font-weight:600;
+  cursor:pointer; border:1.5px solid var(--forest);
+  background:transparent; color:var(--forest);
+  transition:all .18s;
+}
+.preset:hover,.preset.active { background:var(--forest); color:white; }
+
+/* controls */
+.controls-card {
+  background:white; border:var(--border);
+  border-radius:var(--radius); padding:30px 28px;
+  box-shadow:var(--shadow); margin-bottom:20px;
+}
+.controls-head {
+  font-family:'Playfair Display',serif;
+  font-size:1.15rem; color:var(--forest);
+  margin-bottom:26px;
+}
+.ctrl-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(195px,1fr)); gap:22px; }
+.ctrl label {
+  display:block;
+  font-size:.74rem; font-weight:700;
+  color:var(--text-muted); margin-bottom:8px;
+  text-transform:uppercase; letter-spacing:.07em;
+}
+.ctrl-val {
+  font-family:'Playfair Display',serif;
+  font-size:1.5rem; font-weight:700;
+  color:var(--forest); line-height:1; margin-bottom:10px;
+}
+.ctrl-val small {
+  font-family:'DM Sans',sans-serif;
+  font-size:.85rem; font-weight:400; color:var(--text-muted);
+}
+input[type=range] {
+  -webkit-appearance:none; appearance:none;
+  width:100%; height:5px;
+  background:var(--cream-dark); border-radius:999px;
+  outline:none; cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance:none;
+  width:22px; height:22px;
+  background:var(--forest); border-radius:50%;
+  border:3px solid white;
+  box-shadow:0 2px 8px rgba(28,58,42,.28);
+  transition:transform .14s;
+}
+input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.2); }
+input[type=range]::-moz-range-thumb {
+  width:22px; height:22px;
+  background:var(--forest); border-radius:50%;
+  border:3px solid white;
+}
+
+/* result cards */
+.result-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
+@media(max-width:480px){ .result-row { grid-template-columns:1fr 1fr; } }
+.res-card {
+  background:white; border:var(--border);
+  border-radius:var(--radius-sm); padding:20px 16px;
+  text-align:center; box-shadow:var(--shadow);
+}
+.res-card.primary {
+  background:var(--forest);
+  border-color:transparent;
+}
+.res-val {
+  font-family:'Playfair Display',serif;
+  font-size:1.45rem; font-weight:700;
+  color:var(--forest); line-height:1;
+  transition:all .25s;
+}
+.res-card.primary .res-val { color:var(--amber-light); }
+.res-lbl { font-size:.72rem; color:var(--text-muted); margin-top:5px; text-transform:uppercase; letter-spacing:.05em; line-height:1.3; }
+.res-card.primary .res-lbl { color:rgba(255,255,255,.55); }
+.res-sub { font-size:.74rem; color:var(--forest-light); margin-top:4px; font-weight:500; }
+.res-card.primary .res-sub { color:rgba(255,255,255,.48); }
+
+/* chart */
+.chart-card {
+  background:white; border:var(--border);
+  border-radius:var(--radius); padding:28px 24px;
+  box-shadow:var(--shadow); margin-bottom:20px;
+}
+.chart-card h3 {
+  font-family:'Playfair Display',serif;
+  font-size:1.05rem; color:var(--forest); margin-bottom:5px;
+}
+.chart-card p { font-size:.85rem; color:var(--text-muted); margin-bottom:18px; }
+.chart-leg { display:flex; gap:16px; margin-top:14px; flex-wrap:wrap; }
+.cl { display:flex; align-items:center; gap:6px; font-size:.8rem; color:var(--text-muted); }
+.cl-dot { width:12px; height:12px; border-radius:3px; }
+
+/* insight */
+.insight {
+  background:linear-gradient(135deg,rgba(232,160,32,.10),rgba(28,58,42,.06));
+  border:1px solid rgba(232,160,32,.24);
+  border-radius:var(--radius); padding:24px 28px;
+  margin-bottom:20px;
+}
+.insight h3 {
+  font-family:'Playfair Display',serif;
+  font-size:1.08rem; color:var(--forest); margin-bottom:9px;
+}
+.insight p { font-size:.92rem; color:var(--text-muted); line-height:1.68; }
+.insight strong { color:var(--forest); }
+
+/* sticky scenario params */
+.params-card {
+  background:white;
+  border:var(--border);
+  border-radius:var(--radius);
+  padding:24px 24px;
+  box-shadow:var(--shadow);
+  margin-bottom:14px;
+}
+.params-card h3 {
+  font-family:'Playfair Display',serif;
+  font-size:1.02rem;
+  color:var(--forest);
+  margin-bottom:14px;
+}
+.params-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:12px;
+}
+.param-box {
+  background:var(--cream);
+  border-radius:var(--radius-sm);
+  padding:14px 14px;
+  border:1px solid rgba(28,58,42,.06);
+}
+.param-label {
+  display:block;
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--text-light);
+  margin-bottom:6px;
+}
+.param-value {
+  font-family:'Playfair Display',serif;
+  font-size:1.08rem;
+  font-weight:700;
+  color:var(--forest);
+  line-height:1.2;
+}
+
+/* scenario title */
+.scen-title {
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem; color:var(--forest);
+  margin:28px 0 14px;
+}
+
+/* ── FOOTER ── */
+footer {
+  background:var(--forest); color:rgba(255,255,255,.48);
+  text-align:center; padding:30px 22px;
+  font-size:.78rem; line-height:1.75;
+}
+footer strong { color:rgba(255,255,255,.78); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+.fu { animation:fadeUp .5s ease both; }
+.fu1{animation-delay:.04s} .fu2{animation-delay:.10s} .fu3{animation-delay:.17s} .fu4{animation-delay:.24s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  html { font-size:16px; }
+  .hero{padding:54px 18px 48px}
+  .hero-stats{flex-wrap:wrap}
+  .hstat{min-width:120px}
+  .sec{padding:42px 18px}
+  .hbox{flex-direction:column;padding:26px 22px}
+  .controls-card{padding:24px 20px}
+  .ctrl-grid{grid-template-columns:1fr 1fr}
+  .params-grid{grid-template-columns:1fr 1fr}
+  table.styled th,table.styled td{padding:10px 12px;font-size:.84rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">🌳 Ruhestand<span class="nav-logo-dot">|</span>Kapitalerhalt & Entnahmestrategien</div>
+  <div class="nav-pills">
+    <button class="nav-pill active" onclick="showPage('p1',this)">📚 Strategie</button>
+    <button class="nav-pill" onclick="showPage('p2',this)">🎮 Simulator</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════
+     PAGE 1  ·  STRATEGIE
+════════════════════════════════════ -->
+<div id="p1" class="page active">
+
+<!-- HERO -->
+<div class="hero fu">
+  <div class="eyebrow">✦ Leitfaden · 100.000 € Erbe klug einsetzen</div>
+  <h1>Das Erbe soll<br><em>bleiben</em>,<br>nicht schnell verschwinden.</h1>
+  <p class="hero-sub">Im Ruhestand gelten andere Regeln als beim Vermögensaufbau. Sicherheit, Liquidität und Kaufkrafterhalt stehen vorne – nicht maximale Rendite. Dieser Leitfaden zeigt, wie 100.000 € über 20–30 Jahre planbar tragen können.</p>
+  <div class="hero-stats">
+    <div class="hstat">
+      <div class="hstat-n">3 – 3,5 %</div>
+      <div class="hstat-l">Sichere Entnahmerate pro Jahr, damit das Kapital 25–30 Jahre trägt</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-n">~2,4 %</div>
+      <div class="hstat-l">Inflation in Deutschland – der stille Gegner jedes Sparkontos</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-n">2,5 – 3 %</div>
+      <div class="hstat-l">Aktuell realistisch erreichbar auf Tages- und Festgeld (04/2026)</div>
+    </div>
+  </div>
+</div>
+
+<!-- 1. DIE AUSGANGSLAGE -->
+<div class="sec fu fu1">
+  <div class="sec-ey">Kapitel 1 · Die Ausgangslage</div>
+  <div class="sec-title">Warum die Rentenphase andere Regeln hat</div>
+  <div class="sec-lead">In der Ansparphase ist Zeit der größte Verbündete – Rückschläge werden durch Jahrzehnte ausgeglichen. Im Ruhestand kehrt sich das um: Es gibt keinen neuen Lohn mehr, der Verluste nachfüllt. Ein Fehlstart kann nicht mehr aufgeholt werden. Die Strategie muss sich daran anpassen.</div>
+
+  <div class="hbox">
+    <div class="hbox-icon">🔄</div>
+    <div>
+      <h3>Der Perspektivwechsel mit dem Rentenbeginn</h3>
+      <p>Mit dem Rentenbeginn dreht sich der Geldfluss um. Plötzlich geht es nicht mehr darum, <strong>wie viel Rendite erreichbar ist</strong>, sondern <strong>wie das vorhandene Kapital dauerhaft Einkommen liefert, ohne zu früh aufgebraucht zu sein</strong>. Das ist kein Detail – das ist ein komplett anderes Denken.</p>
+    </div>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:16px;">
+    <div class="card">
+      <div class="card-icon">⏳</div>
+      <h3>Kurzer Horizont</h3>
+      <p>Ein 70-Jähriger plant realistisch 15–25 Jahre, nicht 40 Jahre! <br>Geld, das in 5 Jahren gebraucht wird, darf nicht voll an der Börse liegen.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💸</div>
+      <h3>Laufende Entnahmen</h3>
+      <p>Das Kapital muss arbeiten, während gleichzeitig Geld entnommen wird. Ein Crash gleich zu Beginn wirkt dann doppelt stark.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏥</div>
+      <h3>Unvorhergesehenes</h3>
+      <p>Pflegebedarf, Reparaturen, Gesundheitsausgaben – die Wahrscheinlichkeit unplanbarer großer Kosten steigt mit dem Alter.</p>
+    </div>
+  </div>
+
+  <div class="merksatz">
+    <p>Im Ruhestand ist der Schutz des Kapitals wichtiger als das letzte halbe Prozent Rendite. Wer 100.000 € erbt, muss nicht reicher werden – nur klug damit umgehen.</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 2. RENDITEREIHENFOLGE -->
+<div class="sec fu fu2">
+  <div class="sec-ey">Kapitel 2 · Das wichtigste Risiko</div>
+  <div class="sec-title">Das Renditereihenfolge-Risiko</div>
+  <div class="sec-lead">Das größte, meist unterschätzte Risiko im Ruhestand hat einen sperrigen Namen: Renditereihenfolge-Risiko (engl. Sequence of Returns Risk). Zwei Rentner mit derselben Durchschnittsrendite und derselben Entnahme können völlig unterschiedlich enden – nur weil die schlechten Jahre einmal am Anfang und einmal am Ende kommen.</div>
+
+  <div class="table-wrap" style="margin-bottom:16px;">
+    <table class="styled">
+      <tr><th>Szenario</th><th>Jahr 1–3</th><th>Jahr 4–20</th><th>Ergebnis nach 20 Jahren</th></tr>
+      <tr><td><strong>Rentner A</strong></td><td class="bad">–20 %, –10 %, –5 %</td><td>solide positive Renditen</td><td class="bad">Depot früh geschrumpft, <br>Geld reicht nicht</td></tr>
+      <tr><td><strong>Rentner B</strong></td><td class="good">+15 %, +10 %, +5 %</td><td>solide positive Renditen</td><td class="good">Depot hält, <br>Vermögen teils erhalten</td></tr>
+    </table>
+  </div>
+  <p style="font-size:.8rem;color:var(--text-light);margin-top:-8px;margin-bottom:20px;font-style:italic;">Beide haben dieselbe Durchschnittsrendite. Trotzdem endet A deutlich schlechter, weil feste Entnahmen in ein fallendes Depot besonders weh tun.</p>
+
+  <div class="abox">
+    <h3>🛡️ Die Konsequenz für die Aufteilung des Erbes</h3>
+    <p>Weil dieses Risiko real ist, <strong>gehört nie das gesamte Erbe in ETFs</strong>. Ein Puffer aus sicheren Anlagen (Tagesgeld, Festgeld) schützt davor, in einem schlechten Jahr Aktien mit Verlust verkaufen zu müssen. Diese <strong>Puffer-Idee ist der Kern der ganzen Strategie</strong>.</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 3. SCHICHTENMODELL -->
+<div class="sec">
+  <div class="sec-ey">Kapitel 3 · Die Kernstrategie</div>
+  <div class="sec-title">Das 3-Schichten-Modell im Ruhestand</div>
+  <div class="sec-lead">Statt 100.000 € in einen Topf zu werfen, wird das Geld in drei Schichten aufgeteilt – jede mit klarer Aufgabe und klarem Zeithorizont. Das ist die einfachste und bewährteste Form der Ruhestandsanlage.</div>
+
+  <div class="alloc-card">
+    <h3>📊 Aufteilung für 100.000 € – konservativ-ausgewogen</h3>
+    <p class="sub">Eine vernünftige Grundaufteilung für Rentner mit moderater Risikobereitschaft. Je nach persönlicher Lage können die Gewichte angepasst werden.</p>
+
+    <div class="alloc-bar">
+      <div class="alloc-seg" style="flex:15;background:var(--forest-mid)">15 %</div>
+      <div class="alloc-seg" style="flex:45;background:var(--amber);color:var(--forest)">45 %</div>
+      <div class="alloc-seg" style="flex:40;background:var(--forest-light)">40 %</div>
+    </div>
+
+    <div class="alloc-legend">
+      <div class="alloc-leg-row">
+        <div class="alloc-dot" style="background:var(--forest-mid)"></div>
+        <div class="alloc-text">
+          <div class="alloc-name"><span>🏦 Schicht 1: Liquiditätspuffer (Tagesgeld)</span><span class="alloc-pct">15.000 €</span></div>
+          <div class="alloc-desc">Schnell verfügbar für Unvorhergesehenes, Pflege, Reparaturen. Idealerweise 1–2 Jahresbudgets reserviert, damit in einem Aktien-Crash nicht verkauft werden muss. Zinsen aktuell bei guten Anbietern <strong>bis ~2,9 %</strong> für Bestandskunden, Aktionszinsen für Neukunden teils bis 3,5 % für 3 Monate.</div>
+        </div>
+      </div>
+      <div class="alloc-leg-row">
+        <div class="alloc-dot" style="background:var(--amber)"></div>
+        <div class="alloc-text">
+          <div class="alloc-name"><span>🪜 Schicht 2: Festgeldtreppe</span><span class="alloc-pct">45.000 €</span></div>
+          <div class="alloc-desc">Das sichere Herzstück. In <strong>3 gleiche Tranchen</strong> zu je 15.000 € aufgeteilt mit 1, 2 und 3 Jahren Laufzeit. <strong>Aktuell (04/2026) bis ~2,85 % p. a. erreichbar.</strong><br> Jedes Jahr wird eine Tranche fällig – das Geld ist planbar verfügbar.</div>
+        </div>
+      </div>
+      <div class="alloc-leg-row">
+        <div class="alloc-dot" style="background:var(--forest-light)"></div>
+        <div class="alloc-text">
+          <div class="alloc-name"><span>🌱 Schicht 3: ETF-Anteil (breit gestreut)</span><span class="alloc-pct">40.000 €</span></div>
+          <div class="alloc-desc">Der Inflationsschutz mit Wachstumschance. Breit gestreut, idealerweise <br>70 % MSCI World + 30 % Emerging Markets. Nur dieser Anteil ist Schwankungen ausgesetzt.<br>Zeithorizont: mindestens 7–10 Jahre.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="abox">
+    <h3>💡 Warum genau diese Aufteilung?</h3>
+    <ul>
+      <li><strong>60 % sicher (Schicht 1 + 2)</strong> <br>Deckt viele Jahre Grundbedarf ab, auch wenn die Börse mal 40 % einbricht.</li>
+      <li><strong>40 % ETF</strong> <br>Genug, um die Inflation langfristig zu schlagen, aber klein genug, dass ein Crash nicht schmerzt.</li>
+      <li><strong>Das Gesamtvermögen (mit gesetzlicher Rente) bleibt stabil</strong><br> Die Rente deckt Grundbedarf, das Erbe ist das Zusatzpolster.</li>
+      <li><strong>Flexibel</strong> <br>Wer vorsichtiger ist, geht auf 25 % ETF / 75 % sicher. Wer 30+ Jahre plant und gesund ist, kann auf 50 % ETF erhöhen.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 4. FESTGELDTREPPE -->
+<div class="sec">
+  <div class="sec-ey">Kapitel 4 · Schicht 2 im Detail</div>
+  <div class="sec-title">Die Festgeldtreppe – planbar, sicher, flexibel</div>
+  <div class="sec-lead">Die Festgeldtreppe ist der cleverste Weg, größere Summen zu festen Zinsen anzulegen, ohne sich auf lange Zeit festzulegen. Der Trick: Statt 45.000 € einmalig für 3 Jahre wegzusperren, werden drei gestaffelte Verträge gleichzeitig abgeschlossen.</div>
+
+  <div class="stair-card">
+    <p style="font-size:.92rem;color:var(--text-muted);line-height:1.6;margin-bottom:4px;">
+      <strong style="color:var(--forest)">Beispiel: 45.000 € in drei gleich große Tranchen</strong>
+    </p>
+    <p style="font-size:.85rem;color:var(--text-light);margin-bottom:0;">Aktuelle Spitzenzinsen (Stand 04/2026, sichere EU-Banken mit Einlagensicherung)</p>
+    <div class="stair-bars">
+      <div class="stair-bw">
+        <div class="stair-b" data-rate="~2,65 % p.a." style="height:70px;">15.000 €</div>
+        <div class="stair-lbl">1 Jahr</div>
+      </div>
+      <div class="stair-bw">
+        <div class="stair-b" data-rate="~2,75 % p.a." style="height:110px;">15.000 €</div>
+        <div class="stair-lbl">2 Jahre</div>
+      </div>
+      <div class="stair-bw">
+        <div class="stair-b" data-rate="~2,85 % p.a." style="height:150px;">15.000 €</div>
+        <div class="stair-lbl">3 Jahre</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="abox" style="margin-top:18px;">
+    <h3>🔄 So funktioniert die Treppe laufend</h3>
+    <ul>
+      <li>Jedes Jahr wird eine Tranche fällig – Liquidität ist also jährlich planbar verfügbar.</li>
+      <li>Die fällige Tranche wird entweder <strong>entnommen</strong> (wenn gebraucht) oder <strong>neu für 3 Jahre</strong> angelegt – dann mit den aktuellen Zinsen.</li>
+      <li><strong>Vorteil bei steigenden Zinsen:</strong> Die freiwerdende Tranche kann sofort neu, höher verzinst, angelegt werden.</li>
+      <li><strong>Vorteil bei fallenden Zinsen:</strong> Es sind weiterhin zwei Tranchen zu den alten, besseren Zinsen gesichert.</li>
+    </ul>
+  </div>
+
+  <div class="cbox">
+    <h3>⚠️ Worauf bei der Festgeld-Auswahl achten</h3>
+    <ul>
+      <li><strong>Einlagensicherung:</strong> Nur Banken aus EU-Ländern mit mindestens <strong>Rating AA</strong> (Deutschland, Niederlande, Finnland, Schweden, Österreich, Dänemark).</li>
+      <li><strong>100.000 €-Grenze pro Bank und Person:</strong> Bei 100.000 € Erbe kein Problem – bei größeren Summen auf mehrere Banken verteilen.</li>
+      <li><strong>Automatische Kapitalertragsteuer-Abführung:</strong> Bei ausländischen Banken nicht immer gegeben – dann muss manuell in der Steuererklärung angegeben werden. Erleichterung: Vermittler wie Raisin (Weltsparen) oder CHECK24 Geldanlage.</li>
+      <li><strong>Nicht länger als 3 Jahre binden:</strong> Die Zinsaufschläge für 4+ Jahre sind aktuell zu klein, um die fehlende Flexibilität zu rechtfertigen.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 5. ETF IM RUHESTAND -->
+<div class="sec">
+  <div class="sec-ey">Kapitel 5 · Schicht 3 im Detail</div>
+  <div class="sec-title">ETFs im Ruhestand – warum überhaupt noch?</div>
+  <div class="sec-lead">Die Frage ist berechtigt: Warum soll jemand im Ruhestand noch 40 % in Aktien-ETFs halten, wenn Festgeld sicher 2,8 % bringt? Antwort: Wegen der Inflation. Bei 2,4 % Inflation frisst die Teuerung fast die komplette Festgeldrendite auf. Ohne einen Sachwerteanteil verliert das Vermögen real Jahr für Jahr Kaufkraft.</div>
+
+  <div class="grid-2" style="margin-bottom:16px;">
+    <div class="card">
+      <div class="card-icon">🛡️</div>
+      <h3>Inflationsschutz</h3>
+      <p>Historisch haben globale Aktienmärkte über 15+ Jahre die Inflation deutlich geschlagen. Festgeld dagegen verliert real regelmäßig. Ein ETF-Anteil ist <strong>keine Spekulation, sondern Kaufkrafterhalt</strong>.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧬</div>
+      <h3>Erbe an die nächste Generation</h3>
+      <p>Was im Ruhestand nicht verbraucht wird, geht an Kinder und Enkel. Ein ETF-Anteil wächst über 10–20 Jahre weiter – das Erbe der nächsten Stufe profitiert.</p>
+    </div>
+  </div>
+
+  <div class="hbox" style="margin-bottom:14px;">
+    <div class="hbox-icon">📊</div>
+    <div>
+      <h3>Welche ETFs konkret?</h3>
+      <p>Für die 40.000 €-Schicht empfiehlt sich eine Struktur mit: <strong>70 % iShares Core MSCI World (WKN A0RPWH) + 30 % iShares Core MSCI Emerging Markets IMI (WKN A111X9)</strong>.<br><br> Das ist robust, breit gestreut, günstig und hat keine Extrarisiken. Wer die Volatilität noch glatter haben möchte, kann einen kleinen Anteil als Staatsanleihen-ETF (Euroraum) beimischen – aber das ist optional.</p>
+    </div>
+  </div>
+
+  <div class="merksatz">
+    <p>Kein ETF-Anteil bedeutet nicht „sicher" – es bedeutet „garantierter realer Kaufkraftverlust".</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 6. ENTNAHME -->
+<div class="sec">
+  <div class="sec-ey">Kapitel 6 · Die Entnahmestrategie</div>
+  <div class="sec-title">Wie viel darf entnommen werden?</div>
+  <div class="sec-lead">Die berühmte <strong>4-Prozent-Regel</strong> aus den USA besagt: Aus einem ausgewogenen Depot können jährlich 4 % entnommen werden, inflationsangepasst, und das Kapital reicht für 30 Jahre. Für Deutschland mit höheren Steuern und vorsichtigerer Herangehensweise gilt heute eher eine <strong>3- bis 3,5-Prozent-Regel</strong> als sicherer Richtwert.</div>
+
+  <div class="table-wrap" style="margin-bottom:16px;">
+    <table class="styled">
+      <tr><th>Entnahmerate</th><th>Jährlich aus 100.000 €</th><th>Monatlich</th><th>Einschätzung</th></tr>
+      <tr><td>3,0 %</td><td>3.000 €</td><td>250 €</td><td class="good">Sehr konservativ – Kapital bleibt wahrscheinlich real erhalten</td></tr>
+      <tr><td>3,5 %</td><td>3.500 €</td><td>292 €</td><td class="good">Vernünftiger Mittelweg – hohe Wahrscheinlichkeit, dass 30 Jahre tragen</td></tr>
+      <tr><td>4,0 %</td><td>4.000 €</td><td>333 €</td><td>Klassische Regel – geht meist auf, aber Risiko bei schlechtem Start</td></tr>
+      <tr><td>5,0 %</td><td>5.000 €</td><td>417 €</td><td class="bad">Aggressiv – Pleiterisiko steigt deutlich</td></tr>
+    </table>
+  </div>
+  <p style="font-size:.8rem;color:var(--text-light);margin-top:-8px;margin-bottom:20px;font-style:italic;">Modellhafte Werte vor Steuern. Bei 3 % kann die Entnahme typischerweise jährlich um ~2 % an die Inflation angepasst werden.</p>
+
+  <div class="abox">
+    <h3>🎯 Praktische Entnahmeregeln für den Ruhestand</h3>
+    <ul>
+      <li><strong>Flexibel bleiben:</strong> In guten Börsenjahren kann etwas mehr entnommen werden, in Crash-Jahren weniger. Starre Beträge sind gefährlich.</li>
+      <li><strong>Aus der richtigen Schicht entnehmen:</strong> In Crash-Jahren aus Tagesgeld / fälligem Festgeld – <strong>nie Aktien mit Verlust verkaufen</strong>.</li>
+      <li><strong>Rentenlücke berücksichtigen:</strong> Die gesetzliche Rente deckt Grundbedarf. Das Erbe ist Ergänzung – z. B. Reisen, Geschenke, Rücklagen.</li>
+      <li><strong>Einmal pro Jahr prüfen:</strong> Entnahmeplan kurz anschauen, nicht alle paar Wochen.</li>
+    </ul>
+  </div>
+
+  <div class="cbox">
+    <h3>⚠️ Klassische Denkfehler bei Entnahmen</h3>
+    <ul>
+      <li><strong>„Ich lebe nur von den Zinsen":</strong> Bei 2 % realer Rendite wären das 2.000 € pro Jahr – meist zu wenig. Auch ein bisschen Substanzverzehr ist okay, wenn geplant.</li>
+      <li><strong>„Ich will auf jeden Fall etwas vererben":</strong> Legitim, aber dann muss die Entnahme niedriger sein. Klare Kommunikation mit den Kindern hilft.</li>
+      <li><strong>„Ich ziehe alles auf einmal raus, wenn's kracht":</strong> Garantierter Realisierungs­verlust. Genau dafür ist der Liquiditätspuffer da.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 7. STEUERN -->
+<div class="sec">
+  <div class="sec-ey">Kapitel 7 · Steuern im Ruhestand</div>
+  <div class="sec-title">Das Steuerthema richtig nutzen</div>
+  <div class="sec-lead">Im Ruhestand ist das zu versteuernde Einkommen oft deutlich geringer als im Berufsleben. Das öffnet Möglichkeiten, die Kapitalertragsteuer komplett oder teilweise zu vermeiden – vorausgesetzt, das Wissen ist da.</div>
+
+  <div class="acc">
+    <div class="acc-item open">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <h3><span>📝</span> Freistellungsauftrag – jeder Euro zählt</h3>
+        <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p>Kapitalerträge sind grundsätzlich steuerpflichtig (25 % Abgeltungsteuer + Soli + ggf. Kirchensteuer). Der Sparer-Pauschbetrag liegt 2026 bei <strong>1.000 € pro Person bzw. 2.000 € für Ehepaare</strong>. Ein Ehepaar kann also jährlich 2.000 € an Zinsen und Dividenden steuerfrei vereinnahmen.</p>
+        <p style="margin-top:8px;">Praktisch: Den Freistellungsauftrag auf mehrere Banken verteilen, je nachdem, wo die Zinsen anfallen. Das Gesamtmaximum darf aber 2.000 € nicht überschreiten.</p>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <h3><span>🧾</span> Günstigerprüfung – der unterschätzte Hebel</h3>
+        <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p>Liegt der persönliche Einkommensteuersatz unter 25 %, lohnt sich die <strong>Günstigerprüfung</strong> in der Steuererklärung. Das Finanzamt rechnet dann Kapitalerträge mit dem niedrigeren persönlichen Satz an – und erstattet zu viel gezahlte Abgeltungsteuer.</p>
+        <p style="margin-top:8px;">Im Ruhestand mit kleinerem Einkommen ist das oft der Fall. Die Günstigerprüfung muss aktiv in der Steuererklärung angekreuzt werden (Anlage KAP). <strong>Einfach jedes Jahr beantragen</strong> – schlechter kann es nicht werden, das Finanzamt rechnet automatisch die günstigere Variante.</p>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <h3><span>🏛️</span> NV-Bescheinigung bei sehr niedrigem Einkommen</h3>
+        <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p>Liegt das Gesamteinkommen unter dem Grundfreibetrag (2026: ca. 12.348 € für Alleinstehende, 24.696 € für Verheiratete), gibt es die <strong>Nichtveranlagungs-Bescheinigung</strong> (NV-Bescheinigung) beim Finanzamt. Damit werden Kapitalerträge komplett ohne Steuerabzug ausgezahlt – die Bank führt dann gar nichts ab.</p>
+        <p style="margin-top:8px;">Besonders relevant bei kleinen Renten. Beim Finanzamt formlos beantragen, dann 3 Jahre gültig.</p>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <h3><span>💊</span> Wichtig: Kapitalerträge und Krankenversicherung</h3>
+        <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p><strong>Pflichtversicherte Rentner (KVdR):</strong> Auf Kapitalerträge fällt in der Regel <strong>kein</strong> Kranken- und Pflegeversicherungsbeitrag an. Gut für das Erbe.</p>
+        <p style="margin-top:8px;"><strong>Freiwillig gesetzlich Versicherte Rentner:</strong> Kapitalerträge zählen zu den beitragspflichtigen Einnahmen, das kann spürbar sein. Individuell prüfen lassen.</p>
+        <p style="margin-top:8px;"><strong>Privat Versicherte:</strong> Keine Beitragspflicht auf Kapitalerträge.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 8. SOFORTRENTE -->
+<div class="sec">
+  <div class="sec-ey">Kapitel 8 · Eine häufige Verlockung</div>
+  <div class="sec-title">Sofortrente per Einmalzahlung – warum nicht?</div>
+  <div class="sec-lead">Viele Versicherungen und Banken bewerben bei größeren Geldbeträgen im Ruhestand die „Sofortrente" oder „Rentenversicherung gegen Einmalbeitrag". Das Konzept klingt bestechend: 100.000 € einzahlen, dafür ein Leben lang jeden Monat eine feste Rente bekommen. In der Praxis ist das für die meisten Menschen <strong>mit Abstand die schlechteste der diskutierten Optionen</strong> – hier kommt der ehrliche Vergleich.</div>
+
+  <div class="hbox" style="margin-bottom:14px;">
+    <div class="hbox-icon">💬</div>
+    <div>
+      <h3>Was eine Sofortrente konkret ist</h3>
+      <p>Eine Versicherung übernimmt das Kapital komplett. Im Gegenzug zahlt sie eine monatliche Rente bis zum Tod – also <strong>garantiertes Einkommen ohne "Depot-Bauchschmerzen"</strong>. <br>Typische Konditionen (04/2026, gesund, 65 Jahre alt): Für 100.000 € Einmalbeitrag gibt es rund <strong>380–450 € garantierte Monatsrente</strong>, bei einigen Anbietern mit Überschussbeteiligung ggf. etwas mehr.</p>
+    </div>
+  </div>
+
+  <div class="vs-grid">
+    <div class="abox" style="margin-bottom:0;">
+      <h3>✅ Die echten Pros (die es gibt)</h3>
+      <ul>
+        <li><strong>Langlebigkeitsschutz:</strong> Wird man sehr alt (90+), zahlt die Versicherung weiter, auch wenn das ursprüngliche Kapital längst verbraucht wäre.</li>
+        <li><strong>Null Entscheidungsstress:</strong> Keine Depot-Pflege, keine Sorge um Crashs, einfach Überweisung jeden Monat.</li>
+        <li><strong>Schutz vor sich selbst / Vor Dritten:</strong> Das Kapital ist weg – man kann es nicht mehr „verlieren", verschenken oder "abgeschwatzt" bekommen.</li>
+        <li><strong>Steuerlich attraktives Ertragsanteilverfahren:</strong> Nur ein kleiner Teil der monatlichen Rente wird besteuert (bei Rentenbeginn mit 65: nur 18 % der Rente sind steuerpflichtig).</li>
+      </ul>
+    </div>
+    <div class="cbox">
+      <h3>❌ Die (viel größeren) Contras</h3>
+      <ul>
+        <li><strong>Hohe versteckte Kosten:</strong> Abschluss- und laufende Verwaltungskosten fressen einen relevanten Teil der Rendite. Netto-Rendite oft nur 1,5–2,5 % p.a.</li>
+        <li><strong>Totalverlust bei frühem Tod:</strong> Verstirbt man nach 5 Jahren, sind die verbleibenden rund 75.000 € bei der Versicherung – nicht bei den Erben (außer mit teuer erkaufter Rentengarantiezeit).</li>
+        <li><strong>Keine Flexibilität mehr:</strong> Bei Pflegebedarf, größeren Reparaturen, Hilfe für Kinder – kein Zugriff mehr auf das Kapital.</li>
+        <li><strong>Inflationsproblem:</strong> Feste Rente verliert über 20–30 Jahre massiv an Kaufkraft. 400 € von heute sind bei 2,4 % Inflation in 25 Jahren real nur noch ~220 € wert.</li>
+        <li><strong>Intransparente Konditionen:</strong> Überschussanteile sind nicht garantiert – Versprechungen im Verkaufsgespräch entsprechen selten dem Kleingedruckten.</li>
+        <li><strong>Niedriger „Rentenfaktor":</strong> Versicherungen rechnen mit hoher Lebenserwartung UND eigener Marge. Wer durchschnittlich alt wird, bekommt weniger raus als er einzahlt.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alloc-card" style="margin-top:14px;">
+    <h3>📊 Der nüchterne Vergleich: 100.000 € über 25 Jahre</h3>
+    <p class="sub">Was bringt welche Option für einen gesunden 65-Jährigen, der mit 90 verstirbt? Modellhafte Werte, vor Steuern.</p>
+
+    <div class="table-wrap" style="margin:0;box-shadow:none;">
+      <table class="styled">
+        <tr><th>Option</th><th>Monatlich</th><th>Gesamt 25 Jahre</th><th>Rest für Erben</th></tr>
+        <tr>
+          <td><strong>Sofortrente</strong><br><span style="color:var(--text-light);font-size:.82rem;">garantiert</span></td>
+          <td>~400 €</td>
+          <td>~120.000 €</td>
+          <td class="bad">0 € (ohne Garantiezeit)</td>
+        </tr>
+        <tr>
+          <td><strong>3-Schichten-Modell</strong><br><span style="color:var(--text-light);font-size:.82rem;">40 % ETF / 60 % sicher</span></td>
+          <td class="good">250–350 € flexibel</td>
+          <td>~85.000–105.000 €</td>
+          <td class="good">oft 30.000–80.000 €</td>
+        </tr>
+        <tr>
+          <td><strong>Nur Festgeld</strong><br>(keine ETFs)</td>
+          <td>250 €</td>
+          <td>~75.000 €</td>
+          <td>~25.000–40.000 €</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="merksatz" style="margin-top:18px;">
+    <p>Die Sofortrente verkauft Sicherheit teuer und Flexibilität gar nicht. Wer nicht gleich mit 95 Jahren rechnet und wer den Erben etwas hinterlassen will, fährt mit dem eigenen Depot fast immer besser.</p>
+  </div>
+
+  <div class="abox">
+    <h3>🎯 Wann eine Sofortrente trotzdem Sinn machen kann</h3>
+    <ul>
+      <li>Wenn <strong>Anlageentscheidungen absolut überfordern</strong> – psychologisch relevant, nicht zu unterschätzen.</li>
+      <li>Wenn <strong>keine Erben da sind</strong> oder Erben explizit ausgeschlossen werden sollen.</li>
+      <li>Wenn die <strong>gesetzliche Rente deutlich zu klein</strong> ist und ein garantiertes Zusatzeinkommen psychologisch beruhigt – aber dann nur ein Teil des Erbes (z. B. 30.000 €), nie die gesamten 100.000 €.</li>
+      <li>Wenn <strong>das Langlebigkeitsrisiko</strong> bei der Familie sehr ausgeprägt ist (mehrere Vorfahren &gt; 95 Jahre) – dann wird das statistische Blatt für die Versicherung schlechter.</li>
+    </ul>
+    <p style="margin-top:10px;"><strong>Regel:</strong> Wenn überhaupt, nur einen kleinen Teil des Kapitals (max. 30 %) in eine Sofortrente geben – und unbedingt 3–4 Angebote vergleichen, nur Netto-Tarife ohne Provision in Betracht ziehen. Unabhängiger Honorarberater statt Strukturvertrieb.</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 9. FEHLER -->
+<div class="sec">
+  <div class="sec-ey">Kapitel 9 · Vermeidbare Fehler</div>
+  <div class="sec-title">Die typischen Fallen bei einem Erbe im Ruhestand</div>
+  <div class="sec-lead">Wenn 100.000 € plötzlich auf dem Konto liegen, werden Rentner zur Zielscheibe – für gut gemeinte Ratschläge, teure Bankprodukte und manchmal schlicht unseriöse Angebote. Eine klare Linie schützt.</div>
+
+  <div class="vs-grid">
+    <div class="cbox">
+      <h3>❌ Das sollte vermieden werden</h3>
+      <ul>
+        <li><strong>Teure Lebens- oder Rentenversicherung</strong> als Einmaleinzahlung – hohe Kosten, niedrige Rendite, Kapital lange gebunden.</li>
+        <li><strong>„Exklusive" Anlageberatung bei der Hausbank</strong> mit Provisionsprodukten und Ausgabeaufschlägen von 3–5 %.</li>
+        <li><strong>Geschlossene Fonds</strong> (Container, Immobilien, Solar) mit oft intransparenter Struktur und Totalverlust­risiko.</li>
+        <li><strong>Einzelaktien als „Tipp" aus der Zeitung</strong> oder von Bekannten.</li>
+        <li><strong>Krypto und hoch­spekulative Produkte</strong> – im Ruhestand nicht das richtige Feld, um Lehrgeld zu zahlen.</li>
+        <li><strong>Immobilienkauf „als Wertanlage"</strong>, die man selbst nicht nutzt – hohe Nebenkosten, schlechte Liquidität, Pflegebedarf.</li>
+        <li><strong>Sofort alles auf einmal anlegen,</strong> wenn man sich unsicher fühlt – besser in Etappen.</li>
+      </ul>
+    </div>
+    <div class="abox" style="margin-bottom:0;">
+      <h3>✅ Das ist der vernünftige Weg</h3>
+      <ul>
+        <li><strong>Einfache, transparente Produkte</strong> mit klaren Kosten – Tagesgeld, Festgeld, breite Index-ETFs.</li>
+        <li>Online-Direktbanken oder Neobroker statt teure Filialbank (z. B. ING, DKB, Consorsbank, Scalable, Trade Republic).</li>
+        <li>Jede Entscheidung muss in 1–2 Sätzen erklärbar sein – auch gegenüber den Kindern.</li>
+        <li><strong>Notgroschen als Allererstes</strong> sichern, bevor irgendetwas angelegt wird.</li>
+        <li>Bei Unsicherheit: <strong>unabhängige Honorarberatung</strong> (nicht provisionsbasiert) statt Banken­beratung. Einmalig 300–500 €, dauerhaft nützlich.</li>
+        <li>Lieber 6 Monate warten und nachdenken als überstürzt entscheiden. Geld verliert nicht, wenn es drei Monate auf Tagesgeld liegt.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="merksatz" style="margin-top:18px;">
+    <p>Ein Erbe wird nicht durch falsche Anlagen zerstört – sondern durch den Drang, „jetzt schnell etwas damit zu tun".</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 9. ERBSCHAFT/SCHENKUNG -->
+<div class="sec">
+  <div class="sec-ey">Kapitel 10 · Der weite Blick</div>
+  <div class="sec-title">Schenkung zu Lebzeiten – der zweite Hebel</div>
+  <div class="sec-lead">Wenn ein Teil des Erbes später sowieso an die Kinder oder Enkel gehen soll, lohnt es sich, die Schenkungsfreibeträge zu kennen. Richtig geplant, lässt sich erhebliches Vermögen steuerfrei über Generationen weitergeben.</div>
+
+  <div class="table-wrap" style="margin-bottom:16px;">
+    <table class="styled">
+      <tr><th>Beschenkte Person</th><th>Freibetrag alle 10 Jahre</th><th>Steuerklasse</th></tr>
+      <tr><td><strong>Ehepartner / eingetr. Lebenspartner</strong></td><td class="good">500.000 €</td><td>I</td></tr>
+      <tr><td><strong>Kinder, Stiefkinder</strong></td><td class="good">400.000 €</td><td>I</td></tr>
+      <tr><td><strong>Enkel (Eltern leben noch)</strong></td><td>200.000 €</td><td>I</td></tr>
+      <tr><td><strong>Enkel (Eltern verstorben)</strong></td><td>400.000 €</td><td>I</td></tr>
+      <tr><td>Geschwister, Nichten, Neffen</td><td>20.000 €</td><td>II</td></tr>
+      <tr><td>Übrige (Freunde, entfernte Verwandte)</td><td>20.000 €</td><td>III</td></tr>
+    </table>
+  </div>
+  <p style="font-size:.8rem;color:var(--text-light);margin-top:-8px;margin-bottom:20px;font-style:italic;">Freibeträge gelten pro Schenker und Beschenktem. Ein Kind kann also von Mutter UND Vater jeweils 400.000 € bekommen – zusammen 800.000 € steuerfrei, alle 10 Jahre erneut.</p>
+
+  <div class="hbox">
+    <div class="hbox-icon">👨‍👩‍👧‍👧</div>
+    <div>
+      <h3>Konkret für die Familie mit drei Töchtern</h3>
+      <p>Ein Elternpaar könnte jeder der drei Töchter <strong>alle 10 Jahre je 400.000 € von jedem Elternteil</strong> steuerfrei schenken – also rechnerisch bis zu 2,4 Millionen Euro pro Jahrzehnt an alle drei zusammen. Bei 100.000 € Erbe greift das Steuerthema natürlich nicht sofort – aber wer plant, die Freibeträge systematisch zu nutzen, spart später eventuell Erbschaftsteuer, weil größere Erbschaften auf einen Schlag höher besteuert werden.</p>
+    </div>
+  </div>
+
+  <div class="abox" style="margin-top:14px;">
+    <h3>💡 Gestaltungsideen – konkret und umsetzbar</h3>
+    <ul>
+      <li><strong>Kinderdepot für die Enkel anstoßen:</strong> Eine kleinere Schenkung von z. B. 5.000–10.000 € pro Enkel ins Depot – weit unter Freibetrag, aber mit Jahrzehnten Zeit zum Wachsen. Die Enkel sind Eigentümer, profitieren vom eigenen Sparer-Pauschbetrag.<br>(Auch als sog. "Kettenschenkung" möglich!<br>Bsp: Eltern -> Kind -> Kindeskind => immer voller Steuerfreibetrag von 400.000€ pro 10 Jahre!)</li>
+      <li><strong>Laufende Zuwendungen statt Einmalschenkung:</strong> Monatlich z. B. 100 € in ein Enkel-Depot einzahlen fällt unter „Gelegenheitsgeschenke" oder bleibt unter den Freibeträgen – einfacher als ein großer Betrag.</li>
+      <li><strong>Anzeigepflicht nicht vergessen:</strong> Schenkungen müssen dem Finanzamt innerhalb von 3 Monaten gemeldet werden, auch wenn sie unter dem Freibetrag liegen. Formloses Schreiben genügt.<br> Anzeige ab spätestens 5.000€ Pflicht, da ab hier auch Banken proaktiv ans Finanzamt melden!</li>
+      <li><strong>Rückfall-Klauseln prüfen:</strong> Bei größeren Schenkungen lohnt ein kurzes Gespräch mit Steuerberater oder Notar – z. B. wegen §528 BGB (Rückforderung bei Verarmung des Schenkers).</li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 10. UMSETZUNG -->
+<div class="sec">
+  <div class="sec-ey">Kapitel 11 · Die Umsetzung</div>
+  <div class="sec-title">In 8 Schritten zur durchdachten Anlage</div>
+
+  <div class="steps">
+    <div class="step"><div class="step-n">1</div><div><h3>Nichts überstürzen – 1 bis 3 Monate Bedenkzeit</h3><p>Das Geld sofort aufs Tagesgeld, dann atmen. Überstürzte Entscheidungen sind der häufigste Fehler bei Erbschaften. Drei Monate Denken kosten weniger als eine falsche Anlage.</p><span class="step-tag">🧘 Zuerst ruhig werden</span></div></div>
+
+    <div class="step"><div class="step-n">2</div><div><h3>Finanziellen Rahmen klären</h3><p>Wie viel Geld wird monatlich aus der Rente benötigt? Wie groß ist die Rentenlücke? Gibt es andere Vermögenswerte (Immobilie, Depot, Lebensversicherung)? Ohne Überblick keine Strategie.</p><span class="step-tag">📊 Gesamtsicht zuerst</span></div></div>
+
+    <div class="step"><div class="step-n">3</div><div><h3>Notgroschen sichern</h3><p>Idealerweise mindestens 6–12 Monatsausgaben auf jederzeit verfügbarem Tagesgeld. Das ist nicht „das Erbe" – das ist Notfall­reserve und kommt vor jeder Anlage.</p><span class="step-tag">🛟 10–20 % aufs Tagesgeld</span></div></div>
+
+    <div class="step"><div class="step-n">4</div><div><h3>Broker & Konten auswählen</h3><p>Günstige Direktbank für Tagesgeld und Depot (z. B. ING, DKB), ggf. Vermittler wie Raisin/WeltSparen oder CHECK24 Geldanlage für Festgeld-Angebote. <br>Wichtig: Keine teuren Filialbank-Depots.</p><span class="step-tag">⏱️ ~1–2 Stunden Aufwand</span></div></div>
+
+    <div class="step"><div class="step-n">5</div><div><h3>Freistellungsaufträge setzen</h3><p>Bei jeder Bank die 1.000 € / 2.000 € verteilen. Erspart unnötige Steuerabzüge. Dauert 5 Minuten pro Bank, wirkt jedes Jahr.</p><span class="step-tag">📝 Direkt bei Kontoeröffnung</span></div></div>
+
+    <div class="step"><div class="step-n">6</div><div><h3>Festgeldtreppe anlegen</h3><p>45 % in drei gleiche Tranchen zu 1, 2 und 3 Jahren Laufzeit. Nur Banken mit <strong>EU-Einlagensicherung und mind. AA-Rating</strong>. Zinsen aktuell z.B. ~2,65 % / 2,75 % / 2,85 % p. a.</p><span class="step-tag">🪜 Planbar & gestaffelt</span></div></div>
+
+    <div class="step"><div class="step-n">7</div><div><h3>ETF-Anteil in 6–12 Monaten einsteigen</h3><p>Die 40 % für den ETF-Anteil <strong>nicht auf einmal</strong> anlegen – in monatlichen Tranchen von z. B. 3.000–4.000 € einsteigen. Das glättet Einstiegszeitpunkte und senkt das Risiko, direkt in einen Crash zu kaufen.</p><span class="step-tag">📈 In 10–12 Schritten</span></div></div>
+
+    <div class="step"><div class="step-n">8</div><div><h3>Einmal im Jahr prüfen – nicht öfter</h3><p>Einmal jährlich die Aufteilung checken. Sind die 15% / 45% / 40% Anteile noch ungefähr stimmig? Wenn eine Schicht stark abweicht, leicht ausgleichen. <br>Keine hektische Umschichtung bei Kursschwankungen.</p><span class="step-tag">📅 Einmal pro Jahr, nicht öfter</span></div></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 11. ZUSAMMENFASSUNG -->
+<div class="sec" style="padding-bottom:80px;">
+  <div class="sec-ey">Kapitel 12 · Die Essenz</div>
+  <div class="sec-title">Die wichtigsten Sätze zum Mitnehmen</div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <h3>Das Ziel definiert die Strategie</h3>
+      <p>Nicht Rendite maximieren, sondern Kaufkraft und Liquidität erhalten. Alles andere folgt daraus.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛡️</div>
+      <h3>Sicherheit kommt zuerst</h3>
+      <p>60 % des Erbes in Tagesgeld und Festgeld. Das deckt Jahre an Ausgaben, auch in schlechten Börsenzeiten.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌱</div>
+      <h3>Inflationsschutz ist Pflicht</h3>
+      <p>40 % in breit gestreute ETFs, damit die Kaufkraft langfristig nicht schmilzt. Nicht mehr, aber auch nicht weniger.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧘</div>
+      <h3>Disziplin schlägt Aktionismus</h3>
+      <p>Einmal pro Jahr prüfen – nicht täglich. Im Crash nicht panisch umschichten. Die Strategie muss die Nerven­belastung aushalten.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💰</div>
+      <h3>3 % pro Jahr sind sicher</h3>
+      <p>3.000 € jährlich bzw. 250 € monatlich aus 100.000 € sind auch über 25+ Jahre realistisch entnehmbar. Mehr geht, ist aber riskanter.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">👪</div>
+      <h3>Die nächste Generation mitdenken</h3>
+      <p>Was nicht gebraucht wird, geht weiter. Schenkungs­freibeträge (alle 10 Jahre) klug nutzen statt alles auf den Erbfall zu sparen.</p>
+    </div>
+  </div>
+
+  <div class="merksatz" style="margin-top:22px;">
+    <p>Ein gut strukturiertes Erbe im Ruhestand ist nicht kompliziert – es ist drei Konten, eine jährliche Prüfung und die Disziplin, nicht überreagieren zu müssen.</p>
+  </div>
+</div>
+
+</div><!-- /page1 -->
+
+
+<!-- ═══════════════════════════════════
+     PAGE 2  ·  SIMULATOR
+════════════════════════════════════ -->
+<div id="p2" class="page">
+
+<div class="sim-hero">
+  <h1>🎮 Dein Entnahme-Simulator</h1>
+  <p>Wie lange trägt das Erbe? Stell die Regler ein und sieh, wie Aufteilung, Entnahme und Rendite zusammenspielen.</p>
+</div>
+
+<div class="sim-wrap">
+
+  <!-- Presets -->
+  <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:10px;font-weight:600;">Schnellstart mit typischen Szenarien:</p>
+  <div class="presets">
+    <button class="preset" onclick="applyPreset('vorsichtig')">🛡️ Sehr vorsichtig (25/75)</button>
+    <button class="preset active" onclick="applyPreset('standard')">⚖️ Empfehlung (40/60)</button>
+    <button class="preset" onclick="applyPreset('offensiv')">🌱 Etwas offensiver (55/45)</button>
+    <button class="preset" onclick="applyPreset('nurzinsen')">💎 Nur von Zinsen leben</button>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls-card">
+    <div class="controls-head">⚙️ Deine Parameter einstellen</div>
+    <div class="ctrl-grid">
+      <div class="ctrl">
+        <label>Startkapital (Erbe)</label>
+        <div class="ctrl-val" id="v-start">100.000 <small>€</small></div>
+        <input type="range" id="r-start" min="20000" max="500000" step="5000" value="100000" oninput="updateSim()">
+      </div>
+      <div class="ctrl">
+        <label>Monatliche Entnahme</label>
+        <div class="ctrl-val" id="v-monthly">250 <small>€/Monat</small></div>
+        <input type="range" id="r-monthly" min="0" max="2500" step="25" value="250" oninput="updateSim()">
+      </div>
+      <div class="ctrl">
+        <label>ETF-Anteil</label>
+        <div class="ctrl-val" id="v-etf">40 <small>%</small></div>
+        <input type="range" id="r-etf" min="0" max="80" step="5" value="40" oninput="updateSim()">
+      </div>
+      <div class="ctrl">
+        <label>Inflationsanpassung</label>
+        <div class="ctrl-val" id="v-infl">2,0 <small>% p.a.</small></div>
+        <input type="range" id="r-infl" min="0" max="5" step="0.5" value="2" oninput="updateSim()">
+      </div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="result-row">
+    <div class="res-card primary">
+      <div class="res-val" id="r-years">–</div>
+      <div class="res-lbl">Jahre reicht das Kapital</div>
+      <div class="res-sub" id="r-years-sub">–</div>
+    </div>
+    <div class="res-card">
+      <div class="res-val" id="r-total">–</div>
+      <div class="res-lbl">Gesamt entnommen</div>
+      <div class="res-sub">über die Laufzeit</div>
+    </div>
+    <div class="res-card">
+      <div class="res-val" id="r-rest">–</div>
+      <div class="res-lbl">Rest nach 25 Jahren</div>
+      <div class="res-sub" id="r-rest-sub">Mischrendite</div>
+    </div>
+  </div>
+
+  <!-- Chart -->
+  <div class="chart-card">
+    <h3>📉 Verlauf des Kapitals</h3>
+    <p>So entwickelt sich das Erbe Jahr für Jahr – inklusive Entnahme, Rendite und Inflationsanpassung.</p>
+    <canvas id="simChart" style="max-height:320px"></canvas>
+    <div class="chart-leg">
+      <div class="cl"><div class="cl-dot" style="background:var(--forest)"></div>Depotwert (nominal)</div>
+      <div class="cl"><div class="cl-dot" style="background:var(--amber)"></div>Jahresentnahme (inflationsangepasst)</div>
+    </div>
+  </div>
+
+  <!-- Insight -->
+  <div class="insight">
+    <h3>💡 Was bedeutet das konkret?</h3>
+    <p id="insight-text">–</p>
+  </div>
+
+  <!-- Aktive Parameter -->
+  <div class="params-card">
+    <h3>🧭 Aktive Parameter der Rechnung</h3>
+    <div class="params-grid">
+      <div class="param-box">
+        <span class="param-label">Startkapital</span>
+        <div class="param-value" id="sp-start">–</div>
+      </div>
+      <div class="param-box">
+        <span class="param-label">Entnahme/Monat</span>
+        <div class="param-value" id="sp-monthly">–</div>
+      </div>
+      <div class="param-box">
+        <span class="param-label">ETF-Anteil</span>
+        <div class="param-value" id="sp-etf">–</div>
+      </div>
+      <div class="param-box">
+        <span class="param-label">Mischrendite</span>
+        <div class="param-value" id="sp-return">–</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Szenarien-Tabelle -->
+  <div class="scen-title">📊 Wie verschiedene Entnahmeraten wirken</div>
+  <div class="table-wrap" style="margin-bottom:28px;">
+    <table class="styled">
+      <thead>
+        <tr>
+          <th>Entnahmerate p.a.</th>
+          <th>Monatlich aus Startkapital</th>
+          <th>Jährlich aus Startkapital</th>
+          <th>Reichweite</th>
+        </tr>
+      </thead>
+      <tbody id="scen-body"></tbody>
+    </table>
+  </div>
+
+  <!-- Feste Tabelle aus dem Dokument -->
+  <div class="scen-title">🧮 Entnahmerate × Kapital – schneller Überblick</div>
+  <div class="table-wrap" style="margin-bottom:28px;">
+    <table class="styled">
+      <thead>
+        <tr><th>Kapital</th><th>Bei 3 % p.a.</th><th>Bei 3,5 % p.a.</th><th>Bei 4 % p.a.</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>50.000 €</strong></td><td>125 € / Monat</td><td>146 € / Monat</td><td>167 € / Monat</td></tr>
+        <tr><td><strong>100.000 €</strong></td><td>250 € / Monat</td><td>292 € / Monat</td><td>333 € / Monat</td></tr>
+        <tr><td><strong>150.000 €</strong></td><td>375 € / Monat</td><td>438 € / Monat</td><td>500 € / Monat</td></tr>
+        <tr><td><strong>200.000 €</strong></td><td>500 € / Monat</td><td>583 € / Monat</td><td>667 € / Monat</td></tr>
+        <tr><td><strong>300.000 €</strong></td><td>750 € / Monat</td><td>875 € / Monat</td><td>1.000 € / Monat</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:.78rem;color:var(--text-light);margin-top:-16px;font-style:italic;">Vereinfachte Anfangsentnahme vor Steuern. Bei 3 % bzw. 3,5 % ist das Kapital typischerweise über 25–30 Jahre tragfähig.</p>
+
+</div><!-- /sim-wrap -->
+</div><!-- /page2 -->
+
+<!-- FOOTER -->
+<footer>
+  <strong>⚠️ Hinweis:</strong> Diese Seite ersetzt keine individuelle Anlage-, Steuer- oder Rentenberatung.<br>
+  Alle Zahlen sind Modellrechnungen und keine Garantie für zukünftige Erträge.<br>
+  Zinsen, Steuersätze und Freibeträge: Stand April 2026, Quellen: Verivox, Finanztip, Check24, BZSt, ErbStG.<br>
+  <br>
+  Erstellt von Felix mit ❤️ &amp; 🧠 
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+/* ── PAGE SWITCH ── */
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-pill').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+  if (id === 'p2') { setTimeout(() => { updateSim(); }, 80); }
+}
+
+/* ── ACCORDION ── */
+function toggleAcc(head) {
+  const item = head.closest('.acc-item');
+  item.classList.toggle('open');
+}
+
+/* ── SIMULATION ──
+   Konservativ-realistische Annahmen für das Mischdepot:
+   - ETF-Teil:         6,0 % p.a. brutto (langfristig MSCI World ~7% – 1% Risikopuffer)
+   - Sicherheitsteil:  2,5 % p.a. brutto (Mix aus Tagesgeld ~2,2% & Festgeld ~2,75%)
+   Jährliche Entnahme wird jedes Jahr mit der Inflationsrate erhöht, um die Kaufkraft zu erhalten.
+
+   Reihenfolge pro Jahr:
+     1. Kapital verdient über das Jahr Rendite
+     2. Am Jahresende wird die Jahresentnahme entnommen
+     3. Wenn Kapital < Entnahme → Teilentnahme, Depot auf 0, Ende
+
+   Wichtig: reach == Jahr, in dem das Kapital zum ersten Mal auf 0 fällt.
+*/
+const ETF_RETURN   = 0.06;
+const SAFE_RETURN  = 0.025;
+const MAX_YEARS    = 50;
+
+// Liefert alles in einem Durchlauf zurück - vermeidet doppelte Berechnungen
+function simulatePortfolio(start, monthly, etfPct, inflRate) {
+  const mixReturn     = (etfPct/100) * ETF_RETURN + (1 - etfPct/100) * SAFE_RETURN;
+  const yearlyEntn0   = monthly * 12;
+
+  const labels    = [];
+  const capital   = [];   // Kapital ZU BEGINN von Jahr y (Jahr 0 = Startkapital)
+  const entnahme  = [];   // Entnahme, die IN Jahr y stattfindet
+
+  let cap       = start;
+  let totalOut  = 0;
+  let depleted  = false;  // Wurde das Kapital aufgebraucht?
+  let reach     = null;   // Jahr, in dem das Kapital auf 0 fällt
+
+  for (let y = 0; y <= MAX_YEARS; y++) {
+    labels.push('Jahr ' + y);
+    capital.push(Math.round(Math.max(0, cap)));
+
+    // Wenn schon auf 0, keine weitere Entnahme
+    if (cap <= 0) {
+      entnahme.push(0);
+      if (reach === null) reach = y;
+      continue;
+    }
+
+    // Rendite über das Jahr
+    cap = cap * (1 + mixReturn);
+
+    // Jahresentnahme inflationsangepasst
+    const currentEntn = yearlyEntn0 * Math.pow(1 + inflRate/100, y);
+
+    if (cap >= currentEntn) {
+      cap       = cap - currentEntn;
+      totalOut += currentEntn;
+      entnahme.push(Math.round(currentEntn));
+    } else {
+      // Kapital reicht diesem Jahr nur noch teilweise
+      totalOut += cap;
+      entnahme.push(Math.round(cap));
+      cap       = 0;
+      depleted  = true;
+      reach     = y + 1; // Ende dieses Jahres ist das Kapital leer
+    }
+  }
+
+  // Wenn Kapital auch nach MAX_YEARS noch da ist: reach = null (= "reicht länger")
+  const finalCap = Math.round(Math.max(0, cap));
+  const reached50Plus = !depleted && finalCap > 0;
+
+  return {
+    labels, capital, entnahme,
+    mixReturn, totalOut,
+    finalCap,
+    reach,               // Jahr, in dem Kapital 0 wurde, oder null wenn > 50
+    reached50Plus,       // true, wenn Kapital nach 50 Jahren immer noch positiv ist
+  };
+}
+
+let simChart = null;
+
+function fmtEur(n) {
+  if (n >= 1e6) return (n/1e6).toFixed(2).replace('.',',') + ' Mio €';
+  return Math.round(n).toLocaleString('de-DE') + ' €';
+}
+function fmtK(n) {
+  if (n >= 1e6) return (n/1e6).toFixed(1).replace('.',',') + ' Mio';
+  if (n >= 1e3) return Math.round(n/1e3) + 'k €';
+  return Math.round(n) + ' €';
+}
+
+function updateSim() {
+  const start   = +document.getElementById('r-start').value;
+  const monthly = +document.getElementById('r-monthly').value;
+  const etfPct  = +document.getElementById('r-etf').value;
+  const infl    = +document.getElementById('r-infl').value;
+
+  // Slider-Anzeigen
+  document.getElementById('v-start').innerHTML   = start.toLocaleString('de-DE') + ' <small>€</small>';
+  document.getElementById('v-monthly').innerHTML = monthly.toLocaleString('de-DE') + ' <small>€/Monat</small>';
+  document.getElementById('v-etf').innerHTML     = etfPct + ' <small>%</small>';
+  document.getElementById('v-infl').innerHTML    = infl.toFixed(1).replace('.',',') + ' <small>% p.a.</small>';
+
+  // EINE Simulation - wird für alles verwendet
+  const sim = simulatePortfolio(start, monthly, etfPct, infl);
+
+  // Parameter-Anzeigen
+  document.getElementById('sp-start').textContent   = start.toLocaleString('de-DE') + ' €';
+  document.getElementById('sp-monthly').textContent = monthly.toLocaleString('de-DE') + ' € / Monat';
+  document.getElementById('sp-etf').textContent     = etfPct + ' % ETF / ' + (100-etfPct) + ' % sicher';
+  document.getElementById('sp-return').textContent  = (sim.mixReturn*100).toFixed(2).replace('.',',') + ' % p.a.';
+
+  // Jahre-Anzeige (konsistent mit Chart!)
+  if (sim.reached50Plus) {
+    document.getElementById('r-years').textContent     = '50+';
+    document.getElementById('r-years-sub').textContent = 'Kapital hält sich oder wächst';
+  } else {
+    document.getElementById('r-years').textContent     = sim.reach;
+    document.getElementById('r-years-sub').textContent = 'Jahre bis aufgebraucht';
+  }
+
+  // Gesamt entnommen
+  document.getElementById('r-total').textContent = fmtEur(sim.totalOut);
+
+  // Rest nach 25 Jahren (korrekt aus dem Sim-Array!)
+  const rest25 = sim.capital[25] !== undefined ? sim.capital[25] : 0;
+  document.getElementById('r-rest').textContent    = fmtEur(rest25);
+  document.getElementById('r-rest-sub').textContent = 'bei ' + (sim.mixReturn*100).toFixed(2).replace('.',',') + ' % Mischrendite';
+
+  // Insight - abhängig von Reichweite
+  const entn0    = monthly * 12;
+  const rate0    = start > 0 ? (entn0/start*100).toFixed(1).replace('.',',') : '0';
+  let insightHtml;
+
+  if (monthly === 0) {
+    insightHtml = `Du entnimmst nichts – das Kapital wächst mit der Mischrendite von <strong>${(sim.mixReturn*100).toFixed(2).replace('.',',')} %</strong> einfach weiter. Aus <strong>${fmtEur(start)}</strong> werden nach 25 Jahren <strong>${fmtEur(rest25)}</strong>. Das zeigt, wie mächtig schon moderate Rendite ohne Entnahme wirkt.`;
+  } else if (sim.reached50Plus) {
+    insightHtml = `Bei <strong>${fmtEur(start)}</strong> Startkapital und <strong>${monthly} € monatlicher Entnahme</strong> (<strong>${rate0} %</strong> Anfangsentnahmerate) hält das Kapital <strong>mehr als 50 Jahre</strong>. Die Rendite trägt die Entnahmen mehr als ab – das ist eine sehr sichere Konfiguration, hier ist sogar Luft für höhere Entnahme oder frühzeitiges Verschenken an die Kinder.`;
+  } else if (sim.reach >= 30) {
+    insightHtml = `Bei dieser Entnahme trägt das Kapital <strong>${sim.reach} Jahre</strong>. Das ist eine vernünftige, nachhaltige Einstellung – reicht für einen langen Ruhestand und hat noch Puffer für unvorhergesehene Ereignisse. Gesamtentnahme über die Laufzeit: <strong>${fmtEur(sim.totalOut)}</strong>.`;
+  } else if (sim.reach >= 20) {
+    insightHtml = `Bei <strong>${monthly} €/Monat</strong> (<strong>${rate0} %</strong>) trägt das Kapital <strong>${sim.reach} Jahre</strong>. Für einen Rentenstart ab Mitte 60 kann das knapp werden, wenn man 90+ wird. Überlegung: Entnahme etwas senken oder ETF-Anteil moderat erhöhen.`;
+  } else {
+    insightHtml = `Bei <strong>${monthly} €/Monat</strong> (<strong>${rate0} %</strong>) ist das Kapital nach <strong>${sim.reach} Jahren</strong> aufgebraucht. Das ist für einen Ruhestand <strong>zu aggressiv</strong>. Empfehlung: Entnahme senken (bei 100k eher 250–350 € / Monat) oder zusätzliche Einkommensquelle einplanen.`;
+  }
+  document.getElementById('insight-text').innerHTML = insightHtml;
+
+  // Chart - nur bis kurz nach Kapitalende anzeigen
+  renderChart(sim);
+
+  // Szenarien-Tabelle
+  renderScenarioTable(start, etfPct, infl, monthly);
+}
+
+function renderChart(sim) {
+  const ctx = document.getElementById('simChart').getContext('2d');
+  if (simChart) simChart.destroy();
+
+  // Zeige bis zum Ende der Entnahme + 2 Jahre Puffer, max 40 Jahre
+  const endIdx = sim.reached50Plus ? 40 : Math.min(MAX_YEARS, (sim.reach || MAX_YEARS) + 1);
+  const lblArr = sim.labels.slice(0, endIdx + 1);
+  const capArr = sim.capital.slice(0, endIdx + 1);
+  const entArr = sim.entnahme.slice(0, endIdx + 1);
+
+  simChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: lblArr,
+      datasets: [
+        {
+          label: 'Depotwert',
+          data: capArr,
+          borderColor: 'rgba(28,58,42,1)',
+          backgroundColor: 'rgba(28,58,42,0.12)',
+          fill: true,
+          tension: 0.2,
+          borderWidth: 2.5,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          yAxisID: 'y',
+        },
+        {
+          label: 'Jahresentnahme',
+          data: entArr,
+          borderColor: 'rgba(232,160,32,1)',
+          backgroundColor: 'rgba(232,160,32,0)',
+          borderDash: [5, 4],
+          tension: 0.1,
+          borderWidth: 2,
+          pointRadius: 0,
+          yAxisID: 'y1',
+        },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      interaction: { mode:'index', intersect:false },
+      plugins: {
+        legend: { display:false },
+        tooltip: {
+          callbacks: {
+            label: c => ' ' + c.dataset.label + ': ' + fmtEur(c.raw),
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display:false },
+          ticks: { font:{size:10}, color:'#8a8a80', autoSkip:true, maxTicksLimit:10 },
+        },
+        y: {
+          position:'left',
+          beginAtZero: true,
+          grid: { color:'rgba(0,0,0,0.04)' },
+          ticks: {
+            font:{size:11}, color:'#8a8a80',
+            callback: v => fmtK(v),
+          },
+        },
+        y1: {
+          position:'right',
+          beginAtZero: true,
+          grid: { display:false },
+          ticks: {
+            font:{size:11}, color:'#8a8a80',
+            callback: v => fmtK(v),
+          }
+        }
+      }
+    }
+  });
+}
+
+function renderScenarioTable(start, etfPct, infl, currentMonthly) {
+  const rates = [2.5, 3.0, 3.5, 4.0, 4.5, 5.0];
+  let tbody = '';
+  rates.forEach(r => {
+    const mEntn    = (start * r/100) / 12;
+    const yEntn    = start * r/100;
+    const simR     = simulatePortfolio(start, mEntn, etfPct, infl);
+
+    let reachTxt;
+    if (simR.reached50Plus)     reachTxt = '<span class="good">50+ Jahre</span>';
+    else if (simR.reach >= 30)  reachTxt = '<span class="good">' + simR.reach + ' Jahre</span>';
+    else if (simR.reach >= 20)  reachTxt = simR.reach + ' Jahre';
+    else                        reachTxt = '<span class="bad">' + simR.reach + ' Jahre</span>';
+
+    // Zeile hervorheben, wenn Rate nah an aktueller Einstellung
+    const currentRate = start > 0 ? (currentMonthly * 12 / start * 100) : 0;
+    const hl = Math.abs(r - currentRate) < 0.25
+      ? ' style="background:rgba(28,58,42,0.06);font-weight:600;color:var(--forest)"'
+      : '';
+
+    tbody += `<tr${hl}>
+      <td><strong>${r.toFixed(1).replace('.',',')} %</strong></td>
+      <td>${Math.round(mEntn).toLocaleString('de-DE')} €</td>
+      <td>${yEntn.toLocaleString('de-DE')} €</td>
+      <td>${reachTxt}</td>
+    </tr>`;
+  });
+  document.getElementById('scen-body').innerHTML = tbody;
+}
+
+/* ── PRESETS ── */
+function applyPreset(name) {
+  document.querySelectorAll('.preset').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  const presets = {
+    vorsichtig: [100000, 250, 25, 2],
+    standard:   [100000, 250, 40, 2],
+    offensiv:   [100000, 300, 55, 2],
+    nurzinsen:  [100000, 150, 40, 2],
+  };
+  const [s,m,e,i] = presets[name];
+  document.getElementById('r-start').value   = s;
+  document.getElementById('r-monthly').value = m;
+  document.getElementById('r-etf').value     = e;
+  document.getElementById('r-infl').value    = i;
+  updateSim();
+}
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', () => {
+  const first = document.querySelector('.acc-item');
+  if (first && !first.classList.contains('open')) first.classList.add('open');
+});
+</script>
+</body>
+</html>
