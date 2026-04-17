@@ -45,18 +45,25 @@ nav {
   border-bottom: var(--border);
   display:flex; align-items:center; justify-content:space-between;
   padding:0 22px;
+  gap: 12px;
 }
 .nav-logo {
   font-family:'Playfair Display',serif;
   font-size:1.1rem; font-weight:700;
   color:var(--forest); letter-spacing:-.02em;
   display:flex; align-items:center; gap:8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex-shrink: 1;
 }
 .nav-logo-dot { color:var(--amber); }
 .nav-pills {
   display:flex; gap:3px;
   background:var(--cream-dark);
   border-radius:999px; padding:3px;
+  flex-shrink: 0;
 }
 .nav-pill {
   padding:7px 20px; border-radius:999px;
@@ -253,7 +260,7 @@ nav {
 }
 
 /* ── TABLE ── */
-.table-wrap { overflow-x:auto; border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:14px; }
+.table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:14px; }
 table.styled {
   width:100%; border-collapse:collapse;
   font-size:.9rem;
@@ -276,7 +283,7 @@ table.styled tr:nth-child(even) td { background:#fafaf7; }
 .good { color:#27a057; font-weight:600; }
 .bad  { color:var(--coral); font-weight:600; }
 
-/* ── ALLOCATION BARS (Vermögens-Schichten) ── */
+/* ── ALLOCATION BARS ── */
 .alloc-card {
   background:white; border:var(--border);
   border-radius:var(--radius); padding:30px 28px;
@@ -305,13 +312,13 @@ table.styled tr:nth-child(even) td { background:#fafaf7; }
 }
 .alloc-leg-row:last-child { border-bottom:none; }
 .alloc-dot { width:14px; height:14px; border-radius:4px; margin-top:3px; flex-shrink:0; }
-.alloc-text { flex:1; }
+.alloc-text { flex:1; min-width:0; }
 .alloc-name {
   font-weight:700; color:var(--forest); font-size:.95rem;
   display:flex; justify-content:space-between; align-items:center; gap:10px;
   margin-bottom:3px;
 }
-.alloc-pct { color:var(--amber); font-family:'Playfair Display',serif; font-size:1.05rem; }
+.alloc-pct { color:var(--amber); font-family:'Playfair Display',serif; font-size:1.05rem; white-space:nowrap; }
 .alloc-desc { font-size:.86rem; color:var(--text-muted); line-height:1.55; }
 
 /* ── STEPS ── */
@@ -382,7 +389,7 @@ table.styled tr:nth-child(even) td { background:#fafaf7; }
 .acc-body ul li { font-size:.92rem; color:var(--text-muted); margin-bottom:6px; line-height:1.55; }
 .acc-body strong { color:var(--forest); }
 
-/* ── STAIRCASE (Festgeld-Treppe) ── */
+/* ── STAIRCASE ── */
 .stair-card {
   background:white; border:var(--border);
   border-radius:var(--radius); padding:30px 26px;
@@ -514,7 +521,6 @@ input[type=range]::-moz-range-thumb {
 
 /* result cards */
 .result-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
-@media(max-width:480px){ .result-row { grid-template-columns:1fr 1fr; } }
 .res-card {
   background:white; border:var(--border);
   border-radius:var(--radius-sm); padding:20px 16px;
@@ -564,6 +570,89 @@ input[type=range]::-moz-range-thumb {
 }
 .insight p { font-size:.92rem; color:var(--text-muted); line-height:1.68; }
 .insight strong { color:var(--forest); }
+
+/* ── PRAXIS-ERKLÄRUNG BOX ── */
+.praxis-box {
+  background: white;
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: 28px 28px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+.praxis-box h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.08rem;
+  color: var(--forest);
+  margin-bottom: 6px;
+}
+.praxis-box > p.praxis-intro {
+  font-size: .9rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin-bottom: 20px;
+}
+.praxis-step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px dashed rgba(28,58,42,.10);
+}
+.praxis-step:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.praxis-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream);
+  border-radius: 10px;
+}
+.praxis-text {
+  flex: 1;
+  min-width: 0;
+}
+.praxis-text h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: .98rem;
+  color: var(--forest);
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+.praxis-text p {
+  font-size: .9rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+.praxis-text strong {
+  color: var(--forest);
+  font-weight: 600;
+}
+.praxis-note {
+  background: rgba(232,160,32,.09);
+  border: 1px solid rgba(232,160,32,.22);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-top: 18px;
+}
+.praxis-note p {
+  font-size: .88rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-style: italic;
+}
+.praxis-note strong {
+  color: var(--forest);
+  font-style: normal;
+}
 
 /* sticky scenario params */
 .params-card {
@@ -628,18 +717,159 @@ footer strong { color:rgba(255,255,255,.78); }
 .fu { animation:fadeUp .5s ease both; }
 .fu1{animation-delay:.04s} .fu2{animation-delay:.10s} .fu3{animation-delay:.17s} .fu4{animation-delay:.24s}
 
-/* ── RESPONSIVE ── */
+/* ══════════════════════════════════
+   RESPONSIVE – TABLET
+═══════════════════════════════════ */
 @media(max-width:600px){
   html { font-size:16px; }
+  nav { height:56px; padding:0 16px; gap:8px; }
+  .nav-logo { font-size:.95rem; }
+  .nav-pill { padding:6px 16px; font-size:.82rem; }
   .hero{padding:54px 18px 48px}
-  .hero-stats{flex-wrap:wrap}
-  .hstat{min-width:120px}
+  .hero-stats{flex-direction:column}
+  .hstat{border-right:none; border-bottom:1px solid rgba(255,255,255,.10); padding:18px 14px}
+  .hstat:last-child{border-bottom:none}
   .sec{padding:42px 18px}
   .hbox{flex-direction:column;padding:26px 22px}
   .controls-card{padding:24px 20px}
   .ctrl-grid{grid-template-columns:1fr 1fr}
   .params-grid{grid-template-columns:1fr 1fr}
+  .result-row { grid-template-columns: 1fr 1fr; gap:10px; }
+  .vs-grid { grid-template-columns:1fr; }
+  .alloc-name { flex-wrap:wrap; }
   table.styled th,table.styled td{padding:10px 12px;font-size:.84rem}
+  .sim-wrap { padding:30px 18px 60px; }
+  .sim-hero { padding:48px 18px 40px; }
+  .praxis-box { padding:24px 20px; }
+}
+
+/* ══════════════════════════════════
+   RESPONSIVE – MOBILE (iPhone etc.)
+═══════════════════════════════════ */
+@media(max-width:440px){
+  html { font-size:15.5px; }
+  nav { height:52px; padding:0 12px; gap:6px; }
+  .nav-logo { font-size:.88rem; gap:5px; }
+  .nav-logo-dot { display:none; }
+  .nav-pills { padding:2px; gap:2px; }
+  .nav-pill { padding:6px 13px; font-size:.78rem; }
+
+  .hero { padding:42px 16px 38px; }
+  .eyebrow { font-size:.68rem; padding:4px 11px; margin-bottom:18px; }
+  .hero h1 { font-size:1.65rem; margin-bottom:14px; }
+  .hero-sub { font-size:.92rem; }
+  .hstat-n { font-size:1.5rem; }
+  .hstat-l { font-size:.7rem; }
+
+  .sec { padding:34px 14px; }
+  .sec-title { font-size:1.35rem; }
+  .sec-lead { font-size:.92rem; margin-bottom:24px; }
+
+  .card { padding:22px 18px; }
+  .grid-3 { grid-template-columns:1fr; }
+  .grid-2 { grid-template-columns:1fr; }
+
+  .hbox { padding:22px 16px; gap:14px; }
+  .hbox-icon { font-size:1.5rem; }
+  .hbox h3 { font-size:1.05rem; }
+  .hbox p { font-size:.88rem; }
+
+  .abox, .cbox { padding:22px 18px; }
+  .abox ul, .cbox ul { margin-left:16px; }
+
+  .merksatz { padding:14px 16px; }
+  .merksatz p { font-size:.95rem; }
+
+  .alloc-card { padding:22px 16px; }
+  .alloc-bar { height:38px; }
+  .alloc-seg { font-size:.72rem; }
+  .alloc-name { font-size:.88rem; flex-direction:column; gap:2px; }
+  .alloc-pct { font-size:.95rem; }
+  .alloc-desc { font-size:.82rem; }
+
+  .step { padding:20px 16px; gap:14px; }
+  .step-n { width:36px; height:36px; font-size:1rem; }
+  .step h3 { font-size:.98rem; }
+  .step p { font-size:.88rem; }
+
+  .acc-head { padding:14px 16px; }
+  .acc-head h3 { font-size:.9rem; }
+  .acc-body { padding:0 16px; }
+  .acc-item.open .acc-body { padding:0 16px 16px; }
+
+  .stair-card { padding:22px 16px; }
+  .stair-bars { height:130px; gap:8px; }
+  .stair-b { font-size:.7rem; }
+  .stair-b::after { font-size:.64rem; top:-18px; }
+
+  /* Simulator specific */
+  .sim-hero { padding:40px 14px 32px; }
+  .sim-hero p { font-size:.9rem; }
+  .sim-wrap { padding:22px 14px 50px; }
+
+  .presets {
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:6px;
+    margin-left:-14px; margin-right:-14px;
+    padding-left:14px; padding-right:14px;
+    scrollbar-width:none;
+  }
+  .presets::-webkit-scrollbar { display:none; }
+  .preset { flex-shrink:0; padding:7px 14px; font-size:.78rem; }
+
+  .controls-card { padding:20px 16px; }
+  .controls-head { font-size:1.05rem; margin-bottom:20px; }
+  .ctrl-grid { grid-template-columns:1fr; gap:18px; }
+  .ctrl-val { font-size:1.35rem; }
+
+  .result-row { grid-template-columns:1fr; gap:10px; }
+  .res-card { padding:16px 14px; }
+  .res-val { font-size:1.3rem; }
+
+  .chart-card { padding:20px 14px; }
+  .chart-leg { gap:12px; }
+
+  .insight { padding:20px 18px; }
+  .insight h3 { font-size:1rem; }
+  .insight p { font-size:.88rem; }
+
+  .praxis-box { padding:20px 16px; }
+  .praxis-step { gap:12px; }
+  .praxis-icon { width:36px; height:36px; font-size:1.3rem; }
+  .praxis-text h4 { font-size:.92rem; }
+  .praxis-text p { font-size:.86rem; }
+
+  .params-card { padding:20px 16px; }
+  .params-grid { grid-template-columns:1fr 1fr; gap:10px; }
+  .param-box { padding:12px 12px; }
+  .param-value { font-size:.95rem; }
+
+  .scen-title { font-size:1rem; }
+
+  table.styled th { padding:10px 10px; font-size:.76rem; }
+  table.styled td { padding:9px 10px; font-size:.8rem; }
+
+  footer { padding:24px 16px; font-size:.74rem; }
+}
+
+/* ══════════════════════════════════
+   RESPONSIVE – VERY SMALL (iPhone SE, etc.)
+═══════════════════════════════════ */
+@media(max-width:370px){
+  html { font-size:14.5px; }
+  nav { padding:0 10px; }
+  .nav-logo { font-size:.82rem; }
+  .nav-pill { padding:5px 10px; font-size:.74rem; }
+  .hero { padding:36px 12px 32px; }
+  .hero h1 { font-size:1.5rem; }
+  .sec { padding:28px 12px; }
+  .ctrl-val { font-size:1.2rem; }
+  .res-val { font-size:1.15rem; }
+  .params-grid { grid-template-columns:1fr; }
+  .alloc-leg-row { gap:8px; }
+  .praxis-icon { width:32px; height:32px; font-size:1.1rem; border-radius:8px; }
 }
 </style>
 </head>
@@ -1098,7 +1328,7 @@ footer strong { color:rgba(255,255,255,.78); }
 
 <div class="divider"></div>
 
-<!-- 9. ERBSCHAFT/SCHENKUNG -->
+<!-- 10. ERBSCHAFT/SCHENKUNG -->
 <div class="sec">
   <div class="sec-ey">Kapitel 10 · Der weite Blick</div>
   <div class="sec-title">Schenkung zu Lebzeiten – der zweite Hebel</div>
@@ -1138,7 +1368,7 @@ footer strong { color:rgba(255,255,255,.78); }
 
 <div class="divider"></div>
 
-<!-- 10. UMSETZUNG -->
+<!-- 11. UMSETZUNG -->
 <div class="sec">
   <div class="sec-ey">Kapitel 11 · Die Umsetzung</div>
   <div class="sec-title">In 8 Schritten zur durchdachten Anlage</div>
@@ -1164,7 +1394,7 @@ footer strong { color:rgba(255,255,255,.78); }
 
 <div class="divider"></div>
 
-<!-- 11. ZUSAMMENFASSUNG -->
+<!-- 12. ZUSAMMENFASSUNG -->
 <div class="sec" style="padding-bottom:80px;">
   <div class="sec-ey">Kapitel 12 · Die Essenz</div>
   <div class="sec-title">Die wichtigsten Sätze zum Mitnehmen</div>
@@ -1294,6 +1524,58 @@ footer strong { color:rgba(255,255,255,.78); }
     <p id="insight-text">–</p>
   </div>
 
+  <!-- ═══════════════════════════════════
+       PRAXIS-ERKLÄRUNG (NEU)
+  ════════════════════════════════════ -->
+  <div class="praxis-box">
+    <h3>🏦 Und wie funktioniert das im echten Leben?</h3>
+    <p class="praxis-intro">Die Simulation rechnet vereinfacht mit einer „Mischrendite". Im Alltag sieht das Ganze greifbarer aus – das Geld liegt nämlich nicht in einem Topf, sondern in drei getrennten Töpfen mit unterschiedlichen Aufgaben.</p>
+
+    <div class="praxis-step">
+      <div class="praxis-icon">🪣</div>
+      <div class="praxis-text">
+        <h4>Schritt 1: Das Geld wird am Anfang aufgeteilt</h4>
+        <p>Die gesamte Summe wird auf <strong>drei Konten bzw. Töpfe verteilt</strong>. Bei <strong><span id="px-total">100.000</span> €</strong> und <strong><span id="px-etf-pct">40</span> % ETF-Anteil</strong> heißt das: <strong><span id="px-tg">15.000</span> € auf ein Tagesgeldkonto</strong> (jederzeit verfügbar), <strong><span id="px-fg">45.000</span> € in Festgeld</strong> (gesperrt für 1, 2 und 3 Jahre), und <strong><span id="px-etf">40.000</span> € in ETFs</strong> (Aktienfonds, die an der Börse laufen). Diese Aufteilung passiert einmalig – danach muss man nicht ständig etwas tun.</p>
+      </div>
+    </div>
+
+    <div class="praxis-step">
+      <div class="praxis-icon">📅</div>
+      <div class="praxis-text">
+        <h4>Schritt 2: Jeden Monat wird Geld entnommen</h4>
+        <p>Die monatliche Entnahme von <strong><span id="px-monthly">250</span> €</strong> kommt <strong>immer zuerst vom Tagesgeldkonto</strong> – das ist der Topf, an den man jederzeit rankommt. Das Geld wird einfach per Überweisung auf das Girokonto geschickt. Kein Verkauf nötig, kein Kursrisiko, kein Stress. Bei <span id="px-tg2">15.000</span> € Tagesgeld reicht dieser Topf allein für rund <strong><span id="px-tg-months">60</span> Monate</strong> – also <strong><span id="px-tg-years">5</span> Jahre</strong>, bevor er nachgefüllt werden muss.</p>
+      </div>
+    </div>
+
+    <div class="praxis-step">
+      <div class="praxis-icon">🪜</div>
+      <div class="praxis-text">
+        <h4>Schritt 3: Einmal im Jahr wird „nachgefüllt"</h4>
+        <p>Jedes Jahr wird eine der Festgeld-Tranchen fällig (im ersten Jahr die 1-Jahres-Tranche: <strong><span id="px-fg-tranche">15.000</span> €</strong>). Dieses Geld fließt automatisch zurück aufs Tagesgeldkonto und <strong>füllt den Entnahme-Topf wieder auf</strong>. Von dort wird dann wieder monatlich entnommen. Die frei gewordene Festgeld-Summe kann dann entweder komplett fürs Tagesgeld genutzt oder teilweise erneut als Festgeld für 3 Jahre angelegt werden.</p>
+      </div>
+    </div>
+
+    <div class="praxis-step">
+      <div class="praxis-icon">📈</div>
+      <div class="praxis-text">
+        <h4>Schritt 4: Die ETFs bleiben unangetastet – so lange wie möglich</h4>
+        <p>Der ETF-Anteil (die <strong><span id="px-etf2">40.000</span> €</strong>) liegt einfach im Depot und <strong>wächst im Hintergrund mit</strong>. In guten Jahren um 8–10 %, in schlechten Jahren fällt er vielleicht um 20 %. Das ist egal, weil man in den ersten Jahren gar nicht dran muss – dafür sind ja Tagesgeld und Festgeld da. Erst wenn die sicheren Töpfe nach vielen Jahren leer werden, wird ein Teil der ETFs verkauft und wieder in Tagesgeld umgeschichtet.</p>
+      </div>
+    </div>
+
+    <div class="praxis-step">
+      <div class="praxis-icon">🛡️</div>
+      <div class="praxis-text">
+        <h4>Und wenn die Börse einbricht?</h4>
+        <p>Genau dafür ist die ganze Struktur gebaut. Wenn die ETFs z. B. im Jahr 2 plötzlich 30 % verlieren, ist das <strong>kein Problem</strong> – denn man entnimmt ja aus dem Tagesgeld und Festgeld, nicht aus den ETFs. Man muss also nichts mit Verlust verkaufen. Man wartet einfach, bis sich die Kurse erholen. Die sicheren Töpfe (<strong><span id="px-safe-pct">60</span> %</strong> des Geldes = <strong><span id="px-safe-eur">60.000</span> €</strong>) reichen für viele Jahre Entnahme, auch ganz ohne Börse.</p>
+      </div>
+    </div>
+
+    <div class="praxis-note">
+      <p><strong>Zusammengefasst:</strong> Man lebt von den sicheren Töpfen (Tagesgeld + Festgeld) und lässt die ETFs in Ruhe wachsen. Einmal im Jahr schaut man kurz drauf und füllt die Töpfe nach. Das ist alles. Kein tägliches Kurschecken, kein Timing, kein Stress.</p>
+    </div>
+  </div>
+
   <!-- Aktive Parameter -->
   <div class="params-card">
     <h3>🧭 Aktive Parameter der Rechnung</h3>
@@ -1381,52 +1663,36 @@ function toggleAcc(head) {
   item.classList.toggle('open');
 }
 
-/* ── SIMULATION ──
-   Konservativ-realistische Annahmen für das Mischdepot:
-   - ETF-Teil:         6,0 % p.a. brutto (langfristig MSCI World ~7% – 1% Risikopuffer)
-   - Sicherheitsteil:  2,5 % p.a. brutto (Mix aus Tagesgeld ~2,2% & Festgeld ~2,75%)
-   Jährliche Entnahme wird jedes Jahr mit der Inflationsrate erhöht, um die Kaufkraft zu erhalten.
-
-   Reihenfolge pro Jahr:
-     1. Kapital verdient über das Jahr Rendite
-     2. Am Jahresende wird die Jahresentnahme entnommen
-     3. Wenn Kapital < Entnahme → Teilentnahme, Depot auf 0, Ende
-
-   Wichtig: reach == Jahr, in dem das Kapital zum ersten Mal auf 0 fällt.
-*/
+/* ── SIMULATION ── */
 const ETF_RETURN   = 0.06;
 const SAFE_RETURN  = 0.025;
 const MAX_YEARS    = 50;
 
-// Liefert alles in einem Durchlauf zurück - vermeidet doppelte Berechnungen
 function simulatePortfolio(start, monthly, etfPct, inflRate) {
   const mixReturn     = (etfPct/100) * ETF_RETURN + (1 - etfPct/100) * SAFE_RETURN;
   const yearlyEntn0   = monthly * 12;
 
   const labels    = [];
-  const capital   = [];   // Kapital ZU BEGINN von Jahr y (Jahr 0 = Startkapital)
-  const entnahme  = [];   // Entnahme, die IN Jahr y stattfindet
+  const capital   = [];
+  const entnahme  = [];
 
   let cap       = start;
   let totalOut  = 0;
-  let depleted  = false;  // Wurde das Kapital aufgebraucht?
-  let reach     = null;   // Jahr, in dem das Kapital auf 0 fällt
+  let depleted  = false;
+  let reach     = null;
 
   for (let y = 0; y <= MAX_YEARS; y++) {
     labels.push('Jahr ' + y);
     capital.push(Math.round(Math.max(0, cap)));
 
-    // Wenn schon auf 0, keine weitere Entnahme
     if (cap <= 0) {
       entnahme.push(0);
       if (reach === null) reach = y;
       continue;
     }
 
-    // Rendite über das Jahr
     cap = cap * (1 + mixReturn);
 
-    // Jahresentnahme inflationsangepasst
     const currentEntn = yearlyEntn0 * Math.pow(1 + inflRate/100, y);
 
     if (cap >= currentEntn) {
@@ -1434,16 +1700,14 @@ function simulatePortfolio(start, monthly, etfPct, inflRate) {
       totalOut += currentEntn;
       entnahme.push(Math.round(currentEntn));
     } else {
-      // Kapital reicht diesem Jahr nur noch teilweise
       totalOut += cap;
       entnahme.push(Math.round(cap));
       cap       = 0;
       depleted  = true;
-      reach     = y + 1; // Ende dieses Jahres ist das Kapital leer
+      reach     = y + 1;
     }
   }
 
-  // Wenn Kapital auch nach MAX_YEARS noch da ist: reach = null (= "reicht länger")
   const finalCap = Math.round(Math.max(0, cap));
   const reached50Plus = !depleted && finalCap > 0;
 
@@ -1451,8 +1715,8 @@ function simulatePortfolio(start, monthly, etfPct, inflRate) {
     labels, capital, entnahme,
     mixReturn, totalOut,
     finalCap,
-    reach,               // Jahr, in dem Kapital 0 wurde, oder null wenn > 50
-    reached50Plus,       // true, wenn Kapital nach 50 Jahren immer noch positiv ist
+    reach,
+    reached50Plus,
   };
 }
 
@@ -1468,28 +1732,58 @@ function fmtK(n) {
   return Math.round(n) + ' €';
 }
 
+function updatePraxis(start, monthly, etfPct) {
+  const safePct    = 100 - etfPct;
+  // Tagesgeld = 25% des sicheren Anteils, Festgeld = 75%
+  const tgPct      = safePct / 4;
+  const fgPct      = safePct * 3 / 4;
+  const tgEur      = Math.round(start * tgPct / 100);
+  const fgEur      = Math.round(start * fgPct / 100);
+  const etfEur     = Math.round(start * etfPct / 100);
+  const safeEur    = tgEur + fgEur;
+  const fgTranche  = Math.round(fgEur / 3);
+
+  // Wie viele Monate reicht das Tagesgeld allein?
+  const tgMonths   = monthly > 0 ? Math.floor(tgEur / monthly) : 999;
+  const tgYears    = monthly > 0 ? (tgEur / monthly / 12) : 999;
+  const tgYearsStr = tgYears >= 10 ? '10+' : tgYears.toFixed(1).replace('.', ',');
+  const tgMonStr   = tgMonths > 120 ? '120+' : tgMonths;
+
+  const fmt = n => n.toLocaleString('de-DE');
+
+  document.getElementById('px-total').textContent      = fmt(start);
+  document.getElementById('px-etf-pct').textContent    = etfPct;
+  document.getElementById('px-tg').textContent         = fmt(tgEur);
+  document.getElementById('px-fg').textContent         = fmt(fgEur);
+  document.getElementById('px-etf').textContent        = fmt(etfEur);
+  document.getElementById('px-monthly').textContent    = fmt(monthly);
+  document.getElementById('px-tg2').textContent        = fmt(tgEur);
+  document.getElementById('px-tg-months').textContent  = tgMonStr;
+  document.getElementById('px-tg-years').textContent   = tgYearsStr;
+  document.getElementById('px-fg-tranche').textContent = fmt(fgTranche);
+  document.getElementById('px-etf2').textContent       = fmt(etfEur);
+  document.getElementById('px-safe-pct').textContent   = safePct;
+  document.getElementById('px-safe-eur').textContent   = fmt(safeEur);
+}
+
 function updateSim() {
   const start   = +document.getElementById('r-start').value;
   const monthly = +document.getElementById('r-monthly').value;
   const etfPct  = +document.getElementById('r-etf').value;
   const infl    = +document.getElementById('r-infl').value;
 
-  // Slider-Anzeigen
   document.getElementById('v-start').innerHTML   = start.toLocaleString('de-DE') + ' <small>€</small>';
   document.getElementById('v-monthly').innerHTML = monthly.toLocaleString('de-DE') + ' <small>€/Monat</small>';
   document.getElementById('v-etf').innerHTML     = etfPct + ' <small>%</small>';
   document.getElementById('v-infl').innerHTML    = infl.toFixed(1).replace('.',',') + ' <small>% p.a.</small>';
 
-  // EINE Simulation - wird für alles verwendet
   const sim = simulatePortfolio(start, monthly, etfPct, infl);
 
-  // Parameter-Anzeigen
   document.getElementById('sp-start').textContent   = start.toLocaleString('de-DE') + ' €';
   document.getElementById('sp-monthly').textContent = monthly.toLocaleString('de-DE') + ' € / Monat';
   document.getElementById('sp-etf').textContent     = etfPct + ' % ETF / ' + (100-etfPct) + ' % sicher';
   document.getElementById('sp-return').textContent  = (sim.mixReturn*100).toFixed(2).replace('.',',') + ' % p.a.';
 
-  // Jahre-Anzeige (konsistent mit Chart!)
   if (sim.reached50Plus) {
     document.getElementById('r-years').textContent     = '50+';
     document.getElementById('r-years-sub').textContent = 'Kapital hält sich oder wächst';
@@ -1498,15 +1792,12 @@ function updateSim() {
     document.getElementById('r-years-sub').textContent = 'Jahre bis aufgebraucht';
   }
 
-  // Gesamt entnommen
   document.getElementById('r-total').textContent = fmtEur(sim.totalOut);
 
-  // Rest nach 25 Jahren (korrekt aus dem Sim-Array!)
   const rest25 = sim.capital[25] !== undefined ? sim.capital[25] : 0;
   document.getElementById('r-rest').textContent    = fmtEur(rest25);
   document.getElementById('r-rest-sub').textContent = 'bei ' + (sim.mixReturn*100).toFixed(2).replace('.',',') + ' % Mischrendite';
 
-  // Insight - abhängig von Reichweite
   const entn0    = monthly * 12;
   const rate0    = start > 0 ? (entn0/start*100).toFixed(1).replace('.',',') : '0';
   let insightHtml;
@@ -1524,10 +1815,10 @@ function updateSim() {
   }
   document.getElementById('insight-text').innerHTML = insightHtml;
 
-  // Chart - nur bis kurz nach Kapitalende anzeigen
-  renderChart(sim);
+  // ── Update Praxis-Box mit aktuellen Parametern ──
+  updatePraxis(start, monthly, etfPct);
 
-  // Szenarien-Tabelle
+  renderChart(sim);
   renderScenarioTable(start, etfPct, infl, monthly);
 }
 
@@ -1535,7 +1826,6 @@ function renderChart(sim) {
   const ctx = document.getElementById('simChart').getContext('2d');
   if (simChart) simChart.destroy();
 
-  // Zeige bis zum Ende der Entnahme + 2 Jahre Puffer, max 40 Jahre
   const endIdx = sim.reached50Plus ? 40 : Math.min(MAX_YEARS, (sim.reach || MAX_YEARS) + 1);
   const lblArr = sim.labels.slice(0, endIdx + 1);
   const capArr = sim.capital.slice(0, endIdx + 1);
@@ -1625,7 +1915,6 @@ function renderScenarioTable(start, etfPct, infl, currentMonthly) {
     else if (simR.reach >= 20)  reachTxt = simR.reach + ' Jahre';
     else                        reachTxt = '<span class="bad">' + simR.reach + ' Jahre</span>';
 
-    // Zeile hervorheben, wenn Rate nah an aktueller Einstellung
     const currentRate = start > 0 ? (currentMonthly * 12 / start * 100) : 0;
     const hl = Math.abs(r - currentRate) < 0.25
       ? ' style="background:rgba(28,58,42,0.06);font-weight:600;color:var(--forest)"'
